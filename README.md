@@ -11,7 +11,7 @@
     * `mvn compile`
   * To run the project in development mode:
     * `mvn -q exec:java` (here, `-q` tells maven to be _quiet_)
-  * To package the project as a turn-key artefact:
+  * To package the project as a turn-key artifact:
     * `mvn package`
   * To run the packaged delivery:
     * `java -jar target/piraten-karpen-jar-with-dependencies.jar`
