@@ -23,7 +23,9 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
  * Status:
    * Pending (P), Started (S), Blocked (B), Done (D)
  * Definition of Done (DoD):
-   * < Your DoD goes here >
+   * The feature works as intended, is efficient enough for the given scale, and is well documented.
+     Additionally, code is written in such a manner that future MVPs that require modification of
+     the feature can be implemented with minimal changes to its dependents.
 
 ### Backlog
 
