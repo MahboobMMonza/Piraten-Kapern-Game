@@ -7,3 +7,9 @@ Cloned repository onto system and added name and email contact to README.
 
 ### 2022/01/13
 Created this logbook and answered the MVP questions as part of *Step 1* of week 1.
+
+### 2022/01/16
+Added extra features to backlog.
+
+### 2022/01/18
+Added singular dice rolling capabilities.
