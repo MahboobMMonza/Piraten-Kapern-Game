@@ -1,3 +1,5 @@
+package pk;
+
 import java.util.*;
 
 public class Player {
@@ -15,7 +17,7 @@ public class Player {
         dice = new int[1];
     }
 
-    public static void roll() {
+    public void roll() {
         for (int i = 0; i < dice.length; i++) {
             dice[i] = rand.nextInt(0,6);
         }
