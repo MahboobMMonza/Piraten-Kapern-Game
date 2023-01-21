@@ -22,4 +22,6 @@ public class Player {
             dice[i] = rand.nextInt(0,6);
         }
     }
+
+    public void playTurn() {}
 }
