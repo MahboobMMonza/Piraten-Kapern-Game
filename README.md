@@ -31,11 +31,10 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 
 | MVP? | Id  | Feature  | Status  |  Started  | Delivered |
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
-| x   | F01 | Roll eight dices  |  B (F01) |   |
-| x   | F02 | Select how many games as command-line arg.  |  P  |   |
-| x   | F03 | end of turn with three cranes | P | |
+| x   | F01 | Roll eight dices  | P | 01/01/2023 | |
+| -   | F03 | end of turn with three cranes | B (F01) | |
 | x   | F04 | Player keeping random dice at their turn | B (F01) | |
-| x   | F05 | Score points: 3-of-a-kind | B (F04) | |
+| -   | F05 | Score points: 3-of-a-kind | P | |
 | x   | F06 | Score points: All sets | B (F05) | |
 | ... | ... | ... |
 
