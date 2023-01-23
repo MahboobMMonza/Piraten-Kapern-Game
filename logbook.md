@@ -17,3 +17,9 @@ Started singular dice rolling capabilities.
 ### 2022/01/21
 Re-evaluated features, decided f01 and f02 can be combined into a single feature.
 Will update accordingly and merge all changes to main once complete.
+
+### 2022/01/22
+Started working on necessary features for player and game manager to play a game.
+
+### 2022/01/23
+Added a debug logging class to print decisions made in each step.
