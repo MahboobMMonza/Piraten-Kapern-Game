@@ -114,9 +114,9 @@ public class GameManager {
 
     public void playAllGames() {
         for (int i = 0; i < NUM_GAMES; i++) {
-            DebugLogger.logFormat("Start game %d", i + 1);
+            DebugLogger.logFormat("############# Start game %d #############", i + 1);
             playGame();
-            DebugLogger.logFormat("End game %d", i + 1);
+            DebugLogger.logFormat("############## End game %d ##############", i + 1);
         }
     }
 
