@@ -31,7 +31,7 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 
 | MVP? | Id  | Feature  | Status  |  Started  | Delivered |
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
-| -   | F01 | Roll eight dices  | P | 01/01/2023 | 01/23/2023 |
+| -   | F01 | Roll eight dices  | D | 01/01/2023 | 01/23/2023 |
 | x  | F02 | End of turn with three cranes | B (F01) | |
 | -   | F03 | Player keeping random dice at their turn | B (F01) | |
 | x   | F04 | Three skulls disqualifies player | B (F03) | |
