@@ -39,7 +39,7 @@ public class Player {
 
     public void setDone(boolean done) {
         this.done = done;
-        DebugLogger.logFormat("Player %d is done.", ID);
+        DebugLogger.logFormat("Player %d done: %b", ID, this.done);
     }
 
     public boolean isDone() {
