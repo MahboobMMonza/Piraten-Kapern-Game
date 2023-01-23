@@ -6,18 +6,22 @@ public class Player {
 
     // public Strategy strats;
     private Random rand;
-    public int score;
-    public int wins;
-    public Dice dice;
-    public Faces[] diceFaces;
+    private int score;
+    private int wins;
+    private Dice dice;
+    private Faces[] diceFaces;
     public static final int NUM_DICE = 8;
+    public final int ID;
+    private boolean done;
 
-    public Player() {
+    public Player(int playerID) {
         score = 0;
         wins = 0;
+        ID = playerID;
         rand = new Random();
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
+        done = false;
     }
 
     public void roll() {
@@ -26,25 +30,44 @@ public class Player {
         }
     }
 
-    public void resetScore() {
-        this.score = 0;
+    public void reset() {
+        score = 0;
+        done = false;
     }
 
-    public void updateScore() {
-        for (Faces face : diceFaces) {
-            if (face == Faces.GOLD || face == Faces.DIAMOND) {
-                this.score += 100;
-            }
+    public boolean isDone() {
+        return done;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public Faces[] getFaces() {
+        return diceFaces;
+    }
+
+    public void updateScore(int turnScore) {
+        score += turnScore;
+        if (score >= 6000) {
+            done = true;
         }
+    }
+
+    public void resetDone() {
+        done = false;
     }
 
     public void playTurn() {
         // Turn playing logic - for now: roll all 8 dice once, then count score
         roll();
-        updateScore();
     }
 
     public void winGame() {
-        this.wins++;
+        wins++;
     }
 }
