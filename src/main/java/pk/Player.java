@@ -28,18 +28,18 @@ public class Player {
         for (int i = 0; i < NUM_DICE; i++) {
             diceFaces[i] = dice.roll(rand);
         }
-        DebugLogger.log(String.format("Player %d rolled %s", ID, Arrays.toString(diceFaces)));
+        DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
     }
 
     public void reset() {
         score = 0;
         done = false;
-        DebugLogger.log(String.format("Player %d is reset.", ID));
+        DebugLogger.logFormat("Player %d is reset.", ID);
     }
 
     public void setDone(boolean done) {
         this.done = done;
-        DebugLogger.log(String.format("Player %d is done.", ID));
+        DebugLogger.logFormat("Player %d is done.", ID);
     }
 
     public boolean isDone() {
@@ -60,17 +60,17 @@ public class Player {
 
     public void updateScore(int turnScore) {
         score += turnScore;
-        DebugLogger.log(String.format("Player %d's score is %d.", ID, score));
+        DebugLogger.logFormat("Player %d's score is %d.", ID, score);
     }
 
     public void playTurn() {
         // Turn playing logic - for now: roll all 8 dice once, then count score
-        DebugLogger.log(String.format("Player %d is playing their turn.", ID));
+        DebugLogger.logFormat("Player %d is playing their turn.", ID);
         roll();
     }
 
     public void winGame() {
         wins++;
-        DebugLogger.log(String.format("Player %d wins.", ID));
+        DebugLogger.logFormat("Player %d wins.", ID);
     }
 }

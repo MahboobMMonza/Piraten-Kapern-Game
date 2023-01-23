@@ -12,11 +12,11 @@ public class GameManager {
     public static final int ENDING_SCORE = 6000;
     public static final int DNG_POINTS = 100;
 
-    public GameManager() {
+    public GameManager() throws IllegalArgumentException {
         this(MIN_PLAYERS, DEFAULT_NUM_GAMES);
     }
 
-    public GameManager(int numPlayers, int numGames) {
+    public GameManager(int numPlayers, int numGames) throws IllegalArgumentException {
         if (numPlayers < MIN_PLAYERS) {
             throw new IllegalArgumentException("ERROR: There must be at least 2 players playing.");
         }
@@ -27,7 +27,7 @@ public class GameManager {
         NUM_PLAYERS = numPlayers;
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < players.length; i++) {
-            DebugLogger.log(String.format("Creating new player with ID %d", i));
+            DebugLogger.logFormat("Creating new player with ID %d", i);
             players[i] = new Player(i);
         }
     }
@@ -50,13 +50,13 @@ public class GameManager {
                 skullCount++;
             }
         }
-        DebugLogger.log(String.format("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount,
-                goldCount, diamondCount));
+        DebugLogger.logFormat("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount, goldCount,
+                diamondCount);
         if (skullCount < DISQUALIFIED_SKULL_COUNT) {
             players[playerID].updateScore(DNG_POINTS * (goldCount + diamondCount));
         }
         if (skullCount >= DISQUALIFIED_SKULL_COUNT) {
-            DebugLogger.log(String.format("Player %d has exceeded skull count and is disqualified.", playerID));
+            DebugLogger.logFormat("Player %d has exceeded skull count and is disqualified.", playerID);
         }
     }
 
@@ -78,10 +78,10 @@ public class GameManager {
         DebugLogger.log("Checking for true final turn.");
         for (Player player : players) {
             if (player.getScore() >= ENDING_SCORE) {
-                DebugLogger.log(String.format("Player %d has a confirmed ending score.", player.ID));
+                DebugLogger.logFormat("Player %d has a confirmed ending score.", player.ID);
                 return true;
             } else {
-                DebugLogger.log(String.format("Player %d does not have an ending score.", player.ID));
+                DebugLogger.logFormat("Player %d does not have an ending score.", player.ID);
                 player.setDone(false);
             }
         }
@@ -92,7 +92,7 @@ public class GameManager {
         DebugLogger.log("Updating the winner of this game.");
         int highScore = -1;
         for (Player player : players) {
-            DebugLogger.log(String.format("Player %d has a score of %d", player.ID, player.getScore()));
+            DebugLogger.logFormat("Player %d has a score of %d", player.ID, player.getScore());
             highScore = Math.max(highScore, player.getScore());
         }
         for (Player player : players) {
@@ -114,14 +114,14 @@ public class GameManager {
 
     public void playAllGames() {
         for (int i = 0; i < NUM_GAMES; i++) {
-            DebugLogger.log(String.format("Start game %d", i + 1));
+            DebugLogger.logFormat("Start game %d", i + 1);
             playGame();
-            DebugLogger.log(String.format("End game %d", i + 1));
+            DebugLogger.logFormat("End game %d", i + 1);
         }
     }
 
     public double[] getPercentages() {
-        DebugLogger.log(String.format("Starting new simulation with %d players", NUM_PLAYERS));
+        DebugLogger.logFormat("Starting new simulation with %d players", NUM_PLAYERS);
         DebugLogger.log("--------------- Begin Simulation ---------------");
         playAllGames();
         DebugLogger.log("---------------- End Simulation ----------------");
