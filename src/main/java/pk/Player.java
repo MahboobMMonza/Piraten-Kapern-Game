@@ -35,6 +35,10 @@ public class Player {
         done = false;
     }
 
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public boolean isDone() {
         return done;
     }
@@ -53,13 +57,6 @@ public class Player {
 
     public void updateScore(int turnScore) {
         score += turnScore;
-        if (score >= 6000) {
-            done = true;
-        }
-    }
-
-    public void resetDone() {
-        done = false;
     }
 
     public void playTurn() {

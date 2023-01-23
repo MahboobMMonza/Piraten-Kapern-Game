@@ -6,6 +6,7 @@ public class GameManager {
     public final int NUM_GAMES;
     public final int NUM_PLAYERS;
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
+    public static final int ENDING_SCORE = 6000;
     public static final int DNG_POINTS = 100;
 
     public GameManager() {
@@ -44,6 +45,7 @@ public class GameManager {
             if (!player.isDone()) {
                 player.playTurn();
                 assignScore(player.ID);
+                player.setDone(player.getScore() >= ENDING_SCORE);
                 if (!finalTurn && player.isDone()) {
                     return true;
                 }
@@ -54,10 +56,10 @@ public class GameManager {
 
     public boolean checkFinalTurn() {
         for (Player player : players) {
-            if (player.getScore() >= 6000) {
+            if (player.getScore() >= ENDING_SCORE) {
                 return true;
             } else {
-                player.resetDone();
+                player.setDone(false);
             }
         }
         return false;
