@@ -6,7 +6,7 @@ public class PiratenKarpen {
         GameManager manager = new GameManager();
         double[] percentages = manager.getPercentages();
         for (int i = 0; i < percentages.length; i++) {
-            System.out.printf("Player %d win percentage: %f%%", i + 1, percentages[i]);
+            System.out.println(String.format("Player %d win percentage: %f%%", i + 1, percentages[i]));
         }
     }
 
