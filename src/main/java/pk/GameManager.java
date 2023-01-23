@@ -110,6 +110,7 @@ public class GameManager {
                 finalTurn = checkFinalTurn();
             }
         }
+        updateWinner();
     }
 
     public void playAllGames() {
