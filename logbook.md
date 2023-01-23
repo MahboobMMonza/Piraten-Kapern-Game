@@ -24,4 +24,4 @@ Started working on necessary features for player and game manager to play a game
 ### 2022/01/23
 Added a debug logging class to print decisions made in each step. Created entry point
 for game as well as debug log prints in Player and GameManager classes. Completed
-feature F01 (first MVP).
+feature F01 (first MVP). Start feature F02.
