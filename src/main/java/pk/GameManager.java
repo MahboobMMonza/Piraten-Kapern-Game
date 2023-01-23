@@ -7,7 +7,7 @@ public class GameManager {
     public final int NUM_PLAYERS;
     public static final int MIN_PLAYERS = 2;
     public static final int MIN_GAMES = 1;
-    public static final int DEFAULT_NUM_GAMES = 42;
+    public static final int DEFAULT_NUM_GAMES = 3;
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
     public static final int ENDING_SCORE = 6000;
     public static final int DNG_POINTS = 100;
