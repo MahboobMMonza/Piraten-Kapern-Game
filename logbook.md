@@ -1,7 +1,5 @@
 # Assignment Logbook
 
-## Week 1
-
 ### 2022/01/11
 Cloned repository onto system and added name and email contact to README.
 
@@ -25,3 +23,6 @@ Started working on necessary features for player and game manager to play a game
 Added a debug logging class to print decisions made in each step. Created entry point
 for game as well as debug log prints in Player and GameManager classes. Completed
 feature F01 (first MVP). Start feature F02.
+
+### 2022/01/24
+Created strategies package to manage player strategies (random strategy for now).
