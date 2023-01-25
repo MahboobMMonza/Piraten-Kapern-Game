@@ -43,7 +43,7 @@ public class Strategy {
             while (move.isRolled(diceIndex) || diceFaces[diceIndex] == Faces.SKULL) {
                 diceIndex = rand.nextInt(GameManager.NUM_DICE);
             }
-            DebugLogger.logFormat("Rolling the dice at index %d", diceIndex);
+            // DebugLogger.logFormat("Rolling the dice at index %d", diceIndex);
             move.setRoll(diceIndex);
         }
         return;
