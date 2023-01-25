@@ -1,10 +1,11 @@
 package pk;
 
 import java.util.*;
+import pk.strategies.*;
 
 public class Player {
 
-    // public Strategy strats;
+    public Strategy strategy;
     private int score;
     private int wins;
     private Dice dice;
@@ -20,13 +21,28 @@ public class Player {
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
         done = false;
+        strategy = new Strategy(NUM_DICE);
     }
 
     public void roll() {
+        // Initially roll all dice
+        StrategyMove moves;
         for (int i = 0; i < NUM_DICE; i++) {
             diceFaces[i] = dice.roll();
         }
         DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
+        moves = strategy.strategize(diceFaces);
+        while (!moves.endTurn) {
+            for (int i = 0; i < NUM_DICE; i++) {
+                if (moves.isRolled(i)) {
+                    diceFaces[i] = dice.roll();
+                    DebugLogger.logFormat("Player %d is rolling the die at index %d", ID, i);
+                }
+            }
+            DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
+            moves = strategy.strategize(diceFaces);
+        }
+        DebugLogger.logFormat("Player %d has ended their turn", ID);
     }
 
     public void reset() {
