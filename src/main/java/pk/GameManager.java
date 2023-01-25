@@ -2,9 +2,13 @@ package pk;
 
 public class GameManager {
 
-    public Player[] players;
+    private Dice dice;
+    private Faces[] diceFaces;
+    private Player[] players;
+
     public final int NUM_GAMES;
     public final int NUM_PLAYERS;
+    public static final int NUM_DICE = 8;
     public static final int MIN_PLAYERS = 2;
     public static final int MIN_GAMES = 1;
     public static final int DEFAULT_NUM_GAMES = 42;
@@ -35,13 +39,13 @@ public class GameManager {
     public void resetGame() {
         DebugLogger.log("Resetting all players for new game.");
         for (Player player : players) {
-            player.reset();
+            player.resetPlayer();
         }
     }
 
     public void assignScore(int playerID) {
         int goldCount = 0, diamondCount = 0, skullCount = 0;
-        for (Faces face : players[playerID].getFaces()) {
+        for (Faces face : diceFaces) {
             if (face == Faces.GOLD) {
                 goldCount++;
             } else if (face == Faces.DIAMOND) {
@@ -63,7 +67,7 @@ public class GameManager {
     public boolean playTurns(boolean finalTurn) {
         for (Player player : players) {
             if (!player.isDone()) {
-                player.playTurn();
+                player.playTurn(dice, diceFaces);
                 assignScore(player.ID);
                 player.setDone(player.getScore() >= ENDING_SCORE);
                 if (!finalTurn && player.isDone()) {

@@ -5,7 +5,7 @@ import java.util.Random;
 public class Dice {
 
     private static final Faces[] faceValues = Faces.values();
-    public Random bag;
+    private Random bag;
 
     public Dice() {
         bag = new Random();
