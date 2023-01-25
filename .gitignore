@@ -28,3 +28,6 @@ target
 .classpath
 .project
 .settings
+
+# file testing
+test*.txt
