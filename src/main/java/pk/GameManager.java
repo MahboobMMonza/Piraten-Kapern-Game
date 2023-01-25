@@ -11,7 +11,7 @@ public class GameManager {
     public static final int NUM_DICE = 8;
     public static final int MIN_PLAYERS = 2;
     public static final int MIN_GAMES = 1;
-    public static final int DEFAULT_NUM_GAMES = 42;
+    public static final int DEFAULT_NUM_GAMES = 2;
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
     public static final int ENDING_SCORE = 6000;
     public static final int DNG_POINTS = 100;
@@ -29,6 +29,8 @@ public class GameManager {
         }
         NUM_GAMES = numGames;
         NUM_PLAYERS = numPlayers;
+        dice = new Dice();
+        diceFaces = new Faces[NUM_PLAYERS];
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < players.length; i++) {
             DebugLogger.logFormat("Creating new player with ID %d", i);
