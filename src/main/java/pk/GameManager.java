@@ -52,12 +52,12 @@ public class GameManager {
         }
         DebugLogger.logFormat("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount, goldCount,
                 diamondCount);
-        if (skullCount < DISQUALIFIED_SKULL_COUNT) {
-            players[playerID].updateScore(DNG_POINTS * (goldCount + diamondCount));
-        }
-        if (skullCount >= DISQUALIFIED_SKULL_COUNT) {
-            DebugLogger.logFormat("Player %d has exceeded skull count and is disqualified.", playerID);
-        }
+        // if (skullCount < DISQUALIFIED_SKULL_COUNT) {
+        players[playerID].updateScore(DNG_POINTS * (goldCount + diamondCount));
+        // }
+        // if (skullCount >= DISQUALIFIED_SKULL_COUNT) {
+        //     DebugLogger.logFormat("Player %d has exceeded skull count and is disqualified.", playerID);
+        // }
     }
 
     public boolean playTurns(boolean finalTurn) {
