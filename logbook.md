@@ -26,3 +26,7 @@ feature F01 (first MVP). Start feature F02.
 
 ### 2022/01/24
 Created strategies package to manage player strategies (random strategy for now).
+
+### 2022/01/25
+Finished strategies package and updated Player and GameManger classes to be more
+responsible, readable, and fixed access modifiers.
