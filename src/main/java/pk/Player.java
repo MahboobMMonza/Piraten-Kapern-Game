@@ -5,7 +5,6 @@ import java.util.*;
 public class Player {
 
     // public Strategy strats;
-    private Random rand;
     private int score;
     private int wins;
     private Dice dice;
@@ -18,7 +17,6 @@ public class Player {
         score = 0;
         wins = 0;
         ID = playerID;
-        rand = new Random();
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
         done = false;
@@ -26,7 +24,7 @@ public class Player {
 
     public void roll() {
         for (int i = 0; i < NUM_DICE; i++) {
-            diceFaces[i] = dice.roll(rand);
+            diceFaces[i] = dice.roll();
         }
         DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
     }
