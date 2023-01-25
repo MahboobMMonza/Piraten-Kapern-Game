@@ -9,4 +9,18 @@ public class StrategyMove {
         rollList = new boolean[numDice];
     }
 
+    public void resetRollList() {
+        for (int i = 0; i < rollList.length; i++) {
+            rollList[i] = false;
+        }
+    }
+
+    public void makeRoll(int index) {
+        rollList[index] = true;
+    }
+
+    public boolean isRolled(int index) {
+        return rollList[index];
+    }
+
 }
