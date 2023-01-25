@@ -1,21 +1,23 @@
 package pk.strategies;
 
+import pk.GameManager;
+
 public class StrategyMove {
 
     public boolean endTurn;
     private boolean[] rollList;
 
-    public StrategyMove(int numDice) {
-        rollList = new boolean[numDice];
+    protected StrategyMove() {
+        rollList = new boolean[GameManager.NUM_DICE];
     }
 
-    public void resetRollList() {
+    protected void resetRollList() {
         for (int i = 0; i < rollList.length; i++) {
             rollList[i] = false;
         }
     }
 
-    public void setRoll(int index) {
+    protected void setRoll(int index) {
         rollList[index] = true;
     }
 

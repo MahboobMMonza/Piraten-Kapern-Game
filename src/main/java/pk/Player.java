@@ -17,26 +17,25 @@ public class Player {
         wins = 0;
         ID = playerID;
         done = false;
-        strategy = new Strategy(GameManager.NUM_DICE);
+        strategy = new Strategy();
     }
 
     public void roll(Dice dice, Faces[] diceFaces) {
-        StrategyMove moves;
         // Initially roll all dice
         for (int i = 0; i < GameManager.NUM_DICE; i++) {
             diceFaces[i] = dice.roll();
         }
         DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-        moves = strategy.strategize(diceFaces);
-        while (!moves.endTurn) {
+        strategy.strategize(diceFaces);
+        while (!strategy.getMove().endTurn) {
             for (int i = 0; i < GameManager.NUM_DICE; i++) {
-                if (moves.isRolled(i)) {
+                if (strategy.getMove().isRolled(i)) {
                     diceFaces[i] = dice.roll();
                     DebugLogger.logFormat("Player %d is rolling the die at index %d", ID, i);
                 }
             }
             DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-            moves = strategy.strategize(diceFaces);
+            strategy.strategize(diceFaces);
         }
         DebugLogger.logFormat("Player %d has ended their turn", ID);
     }
