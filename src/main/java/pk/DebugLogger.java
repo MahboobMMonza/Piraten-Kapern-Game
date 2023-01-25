@@ -1,11 +1,17 @@
 package pk;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class DebugLogger {
+
+    private static final Logger logger = LogManager.getLogger(DebugLogger.class);
+
     public static void log(String logArgs) {
-        System.out.println(" (DEBUG) " + logArgs);
+        logger.debug(" (DEBUG) " + logArgs);
     }
 
     public static void logFormat(String format, Object... args) {
-        System.out.println(" (DEBUG) " + String.format(format, args));
+        logger.debug(" (DEBUG) " + String.format(format, args));
     }
 }

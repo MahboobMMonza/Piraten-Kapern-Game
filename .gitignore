@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+.factorypath
 
 # BlueJ files
 *.ctxt
@@ -29,5 +30,3 @@ target
 .project
 .settings
 
-# file testing
-test*.txt
