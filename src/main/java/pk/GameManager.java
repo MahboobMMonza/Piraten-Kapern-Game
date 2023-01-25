@@ -30,7 +30,7 @@ public class GameManager {
         NUM_GAMES = numGames;
         NUM_PLAYERS = numPlayers;
         dice = new Dice();
-        diceFaces = new Faces[NUM_PLAYERS];
+        diceFaces = new Faces[NUM_DICE];
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < players.length; i++) {
             DebugLogger.logFormat("Creating new player with ID %d", i);
