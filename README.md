@@ -23,19 +23,20 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
  * Status:
    * Pending (P), Started (S), Blocked (B), Done (D)
  * Definition of Done (DoD):
-   * The feature works as intended, is efficient enough for the given scale, and is well documented.
-     Additionally, code is written in such a manner that future MVPs that require modification of
-     the feature can be implemented with minimal changes to its dependents.
+   * The feature works as intended, is efficient enough for the given scale, and is well documented
+     or easy to understand. Additionally, code is written in such a manner that future MVPs that
+     require modification of the feature can be implemented with minimal changes to its dependents.
 
 ### Backlog
 
-| MVP? | Id  | Feature  | Status  |  Started  | Delivered |
+| MVP? | ID  | Feature  | Status  |  Started  | Delivered |
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
 | -   | F01 | Roll eight dices  | D | 01/01/2023 | 01/23/2023 |
-| -   | F02 | End of turn with three cranes | D | 01/23/2023 | 01/25/2023 |
-| x   | F03 | Player keeping random dice to end their turn | B (F01) | |
-| x   | F04 | Three skulls disqualifies player | B (F03) | |
-| -   | F05 | Score points: 3-of-a-kind | P | |
-| x   | F06 | Score points: All sets | B (F05) | |
+| x   | F02 | End of turn with three cranes | D | 01/23/2023 | 01/25/2023 |
+| -   | F03 | Player keeping random dice to end their turn | P | 01/25/2023 | |
+| -   | F04 | Combo strategies | B (F03) | |
+| x   | F05 | Three skulls disqualifies player | P | |
+| -   | F06 | Score points: 3-of-a-kind | P | |
+| x   | F07 | Score points: All sets (sets only) | B (F06) | |
 | ... | ... | ... |
 
