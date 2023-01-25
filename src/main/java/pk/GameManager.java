@@ -1,10 +1,15 @@
 package pk;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class GameManager {
 
     private Dice dice;
     private Faces[] diceFaces;
     private Player[] players;
+
+    private static final Logger logger = LogManager.getFormatterLogger(GameManager.class);
 
     public final int NUM_GAMES;
     public final int NUM_PLAYERS;
@@ -33,13 +38,13 @@ public class GameManager {
         diceFaces = new Faces[NUM_DICE];
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < players.length; i++) {
-            DebugLogger.logFormat("Creating new player with ID %d", i);
+            logger.debug("Creating new player with ID %d", i);
             players[i] = new Player(i);
         }
     }
 
     public void resetGame() {
-        DebugLogger.log("Resetting all players for new game.");
+        logger.debug("Resetting all players for new game.");
         for (Player player : players) {
             player.resetPlayer();
         }
@@ -56,13 +61,14 @@ public class GameManager {
                 skullCount++;
             }
         }
-        DebugLogger.logFormat("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount, goldCount,
+        logger.debug("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount, goldCount,
                 diamondCount);
         // if (skullCount < DISQUALIFIED_SKULL_COUNT) {
         players[playerID].updateScore(DNG_POINTS * (goldCount + diamondCount));
         // }
         // if (skullCount >= DISQUALIFIED_SKULL_COUNT) {
-        //     DebugLogger.logFormat("Player %d has exceeded skull count and is disqualified.", playerID);
+        // logger.debug("Player %d has exceeded skull count and is disqualified.",
+        // playerID);
         // }
     }
 
@@ -81,13 +87,13 @@ public class GameManager {
     }
 
     public boolean checkFinalTurn() {
-        DebugLogger.log("Checking for true final turn.");
+        logger.debug("Checking for true final turn.");
         for (Player player : players) {
             if (player.getScore() >= ENDING_SCORE) {
-                DebugLogger.logFormat("Player %d has a confirmed ending score.", player.ID);
+                logger.debug("Player %d has a confirmed ending score.", player.ID);
                 return true;
             } else {
-                DebugLogger.logFormat("Player %d does not have an ending score.", player.ID);
+                logger.debug("Player %d does not have an ending score.", player.ID);
                 player.setDone(false);
             }
         }
@@ -95,10 +101,10 @@ public class GameManager {
     }
 
     public void updateWinner() {
-        DebugLogger.log("Updating the winner of this game.");
+        logger.debug("Updating the winner of this game.");
         int highScore = -1;
         for (Player player : players) {
-            DebugLogger.logFormat("Player %d has a score of %d", player.ID, player.getScore());
+            logger.debug("Player %d has a score of %d", player.ID, player.getScore());
             highScore = Math.max(highScore, player.getScore());
         }
         for (Player player : players) {
@@ -121,19 +127,19 @@ public class GameManager {
 
     public void playAllGames() {
         for (int i = 0; i < NUM_GAMES; i++) {
-            DebugLogger.logFormat("############# Start game %d #############", i + 1);
+            logger.debug("############# Start game %d #############", i + 1);
             playGame();
             resetGame();
-            DebugLogger.logFormat("############## End game %d ##############", i + 1);
+            logger.debug("############## End game %d ##############", i + 1);
         }
     }
 
     public double[] getPercentages() {
-        DebugLogger.logFormat("Starting new simulation with %d players", NUM_PLAYERS);
-        DebugLogger.log("--------------- Begin Simulation ---------------");
+        logger.debug("Starting new simulation with %d players", NUM_PLAYERS);
+        logger.debug("--------------- Begin Simulation ---------------");
         playAllGames();
-        DebugLogger.log("---------------- End Simulation ----------------");
-        DebugLogger.log("--------------- Calculating Wins ---------------");
+        logger.debug("---------------- End Simulation ----------------");
+        logger.debug("--------------- Calculating Wins ---------------");
         double[] percentages = new double[NUM_PLAYERS];
         for (int i = 0; i < NUM_PLAYERS; i++) {
             percentages[i] = ((0d + players[i].getWins()) / NUM_GAMES) * 100;

@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 public class DebugLogger {
 
-    private static final Logger logger = LogManager.getLogger(DebugLogger.class);
+    private static final Logger logger = LogManager.getFormatterLogger(DebugLogger.class);
 
     public static void log(String logArgs) {
         logger.debug(" (DEBUG) " + logArgs);

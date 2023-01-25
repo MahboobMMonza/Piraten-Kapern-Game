@@ -1,15 +1,19 @@
 package pk.strategies;
 
 import java.util.Random;
-import pk.DebugLogger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pk.Faces;
 import pk.GameManager;
 
 public class Strategy {
 
+    private static final Logger logger = LogManager.getFormatterLogger(GameManager.class);
+
     private StrategyMove move;
     private static final int MIN_NUM_DICE_ROLLED = 2;
     private Random rand;
+
 
     public Strategy() {
         move = new StrategyMove();
@@ -29,7 +33,7 @@ public class Strategy {
                 skullCount++;
             }
         }
-        DebugLogger.logFormat("There are %d skulls currently rolled", skullCount);
+        logger.debug("There are %d skulls currently rolled", skullCount);
         // If 3 skulls (or more), then end the turn
         if (skullCount >= GameManager.DISQUALIFIED_SKULL_COUNT) {
             move.endTurn = true;
@@ -37,13 +41,13 @@ public class Strategy {
         }
         // Roll a random number of dice between 2 and max dice rolled; don't roll skulls (skullCount <= 2)
         numDiceRoll = rand.nextInt(GameManager.NUM_DICE - skullCount - MIN_NUM_DICE_ROLLED + 1) + MIN_NUM_DICE_ROLLED;
-        DebugLogger.logFormat("Rolling %d dice", numDiceRoll);
+        logger.debug("Rolling %d dice", numDiceRoll);
         for (int i = 0; i < numDiceRoll; i++) {
             diceIndex = rand.nextInt(GameManager.NUM_DICE);
             while (move.isRolled(diceIndex) || diceFaces[diceIndex] == Faces.SKULL) {
                 diceIndex = rand.nextInt(GameManager.NUM_DICE);
             }
-            // DebugLogger.logFormat("Rolling the dice at index %d", diceIndex);
+            // logger.debug("Rolling the dice at index %d", diceIndex);
             move.setRoll(diceIndex);
         }
         return;

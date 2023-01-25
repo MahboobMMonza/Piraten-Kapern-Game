@@ -2,6 +2,8 @@ package pk;
 
 import java.util.*;
 import pk.strategies.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Player {
 
@@ -9,6 +11,8 @@ public class Player {
     private int wins;
     private boolean done;
     private Strategy strategy;
+
+    private static final Logger logger = LogManager.getFormatterLogger(Player.class);
 
     public final int ID;
 
@@ -25,30 +29,30 @@ public class Player {
         for (int i = 0; i < GameManager.NUM_DICE; i++) {
             diceFaces[i] = dice.roll();
         }
-        DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
+        logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
         strategy.strategize(diceFaces);
         while (!strategy.getMove().endTurn) {
             for (int i = 0; i < GameManager.NUM_DICE; i++) {
                 if (strategy.getMove().isRolled(i)) {
                     diceFaces[i] = dice.roll();
-                    DebugLogger.logFormat("Player %d is rolling the die at index %d", ID, i);
+                    logger.debug("Player %d is rolling the die at index %d", ID, i);
                 }
             }
-            DebugLogger.logFormat("Player %d rolled %s", ID, Arrays.toString(diceFaces));
+            logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
             strategy.strategize(diceFaces);
         }
-        DebugLogger.logFormat("Player %d has ended their turn", ID);
+        logger.debug("Player %d has ended their turn", ID);
     }
 
     public void resetPlayer() {
         score = 0;
         done = false;
-        DebugLogger.logFormat("Player %d is reset.", ID);
+        logger.debug("Player %d is reset.", ID);
     }
 
     public void setDone(boolean done) {
         this.done = done;
-        DebugLogger.logFormat("Player %d done: %b", ID, this.done);
+        logger.debug("Player %d done: %b", ID, this.done);
     }
 
     public boolean isDone() {
@@ -65,17 +69,17 @@ public class Player {
 
     public void updateScore(int turnScore) {
         score += turnScore;
-        DebugLogger.logFormat("Player %d's score is %d.", ID, score);
+        logger.debug("Player %d's score is %d.", ID, score);
     }
 
     public void playTurn(Dice dice, Faces[] diceFaces) {
         // Turn playing logic - for now: roll all 8 dice once, then count score
-        DebugLogger.logFormat("Player %d is playing their turn.", ID);
+        logger.debug("Player %d is playing their turn.", ID);
         roll(dice, diceFaces);
     }
 
     public void winGame() {
         wins++;
-        DebugLogger.logFormat("Player %d wins.", ID);
+        logger.debug("Player %d wins.", ID);
     }
 }
