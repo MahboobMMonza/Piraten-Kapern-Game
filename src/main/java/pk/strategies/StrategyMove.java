@@ -3,7 +3,7 @@ package pk.strategies;
 public class StrategyMove {
 
     public boolean endTurn;
-    public boolean[] rollList;
+    private boolean[] rollList;
 
     public StrategyMove(int numDice) {
         rollList = new boolean[numDice];
@@ -15,7 +15,7 @@ public class StrategyMove {
         }
     }
 
-    public void makeRoll(int index) {
+    public void setRoll(int index) {
         rollList[index] = true;
     }
 

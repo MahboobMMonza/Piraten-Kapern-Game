@@ -43,7 +43,7 @@ public class Strategy {
                 diceIndex = rand.nextInt(NUM_DICE);
             }
             DebugLogger.logFormat("Rolling the dice at index %d", diceIndex);
-            move.makeRoll(diceIndex);
+            move.setRoll(diceIndex);
         }
         return move;
     }
