@@ -4,7 +4,7 @@
         <Property name="LOG_DIR">.logs</Property>
     </Properties>
     <Appenders>
-        <File name="FileAppender" fileName="${LOG_DIR}/testRun.log" immediateFlush="true" append="false">
+        <File name="FileAppender" fileName="${LOG_DIR}${sys:file.separator}testRun.log" immediateFlush="true" append="false">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
