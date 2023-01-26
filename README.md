@@ -16,6 +16,8 @@
   * To run the packaged delivery:
     * `java -jar target/piraten-karpen-jar-with-dependencies.jar`
 
+  __NOTE__: Trace logging is automatically conducted by the system and is available in the `logs` folder.
+
 Remark: **We are assuming here you are using a _real_ shell (e.g., anything but PowerShell on Windows)**
 
 ## Feature Backlog
