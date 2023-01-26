@@ -31,9 +31,9 @@ public class Player {
         }
         logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
         strategy.strategize(diceFaces);
-        while (!strategy.getMove().endTurn) {
+        while (!strategy.isEndTurn()) {
             for (int i = 0; i < GameManager.NUM_DICE; i++) {
-                if (strategy.getMove().isRolled(i)) {
+                if (strategy.isRolled(i)) {
                     diceFaces[i] = dice.roll();
                     logger.debug("Player %d is rolling the die at index %d", ID, i);
                 }
