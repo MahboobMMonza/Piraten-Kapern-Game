@@ -30,3 +30,4 @@ Created strategies package to manage player strategies (random strategy for now)
 ### 2022/01/25
 Finished strategies package and updated Player and GameManger classes to be more
 responsible, readable, and fixed access modifiers. Added log4j for logging.
+Re-organized redundant classes StrategyMove and DebugLogger.
