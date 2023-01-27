@@ -23,6 +23,7 @@ public class RandomStrategy extends Strategy {
         if (firstRoll) {
             // Decide to re-roll up to MAX_REROLLS times
             numRolls = rand.nextInt(MAX_REROLLS + 1);
+            logger.debug("Planning to roll %d times", numRolls);
         } else {
             numRolls--;
         }
