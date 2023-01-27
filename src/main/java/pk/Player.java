@@ -10,18 +10,31 @@ public class Player {
     private int score;
     private int wins;
     private boolean done;
-    private Strategy strategy;
+
+    private final Strategy strategy;
 
     private static final Logger logger = LogManager.getFormatterLogger(Player.class);
 
+    public final StrategyTypes strategyType;
     public final int ID;
 
-    public Player(int playerID, String strategyName) {
+    public Player(int playerID, String strategyName) throws IllegalArgumentException {
         score = 0;
         wins = 0;
         ID = playerID;
         done = false;
-        strategy = new RandomStrategy();
+        try {
+            strategyType = StrategyTypes.valueOf(strategyName);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(String.format("ERROR: %s is not a valid Strategy type. Ensure arguments are entered correctly.", strategyName));
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("ERROR: strategyName was passed as a null pointer. Ensure arguments are entered correctly.");
+        }
+        if (strategyType == StrategyTypes.RANDOM) {
+            strategy = new RandomStrategy();
+        } else {
+            strategy = new ComboStrategy();
+        }
     }
 
     public void roll(Dice dice, Faces[] diceFaces) {

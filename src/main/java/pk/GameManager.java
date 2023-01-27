@@ -21,16 +21,24 @@ public class GameManager {
     public static final int ENDING_SCORE = 6000;
     public static final int DNG_POINTS = 100;
 
-    public GameManager() throws IllegalArgumentException, NullPointerException {
-        this(new String[]{"RANDOM", "RANDOM"}, DEFAULT_NUM_GAMES);
+    /*
+     * public GameManager() throws IllegalArgumentException, NullPointerException {
+     * this(new String[]{"RANDOM", "RANDOM"}, DEFAULT_NUM_GAMES);
+     * }
+     */
+
+    public GameManager(String[] playerStrategies) throws IllegalArgumentException {
+        this(playerStrategies, DEFAULT_NUM_GAMES);
     }
 
-    public GameManager(String[] playerStrategies, int numGames) throws IllegalArgumentException, NullPointerException {
+    public GameManager(String[] playerStrategies, int numGames) throws IllegalArgumentException {
         if (playerStrategies.length < MIN_PLAYERS) {
-            throw new IllegalArgumentException("ERROR: There must be at least 2 players playing. Ensure arguments were entered correctly.");
+            throw new IllegalArgumentException(
+                    "ERROR: There must be at least 2 players playing. Ensure arguments were entered correctly.");
         }
         if (numGames < MIN_GAMES) {
-            throw new IllegalArgumentException("ERROR: There must be at least 1 game played. Ensure arguments were entered correctly.");
+            throw new IllegalArgumentException(
+                    "ERROR: There must be at least 1 game played. Ensure arguments were entered correctly.");
         }
         NUM_GAMES = numGames;
         NUM_PLAYERS = playerStrategies.length;
@@ -38,8 +46,8 @@ public class GameManager {
         diceFaces = new Faces[NUM_DICE];
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < NUM_PLAYERS; i++) {
-            logger.debug("Creating new player with ID %d and strategy %s", i, playerStrategies[i]);
             players[i] = new Player(i, playerStrategies[i].toUpperCase().trim());
+            logger.debug("Creating new player with ID %d and strategy %s", players[i].ID, players[i].strategyType);
         }
     }
 
