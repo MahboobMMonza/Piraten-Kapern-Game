@@ -14,15 +14,37 @@ public class ComboStrategy extends Strategy {
     private static final int USEFUL_SET_SIZE = 4;
 
     private int[] faceValueCount;
+    private Faces frequentFace;
+
+    private boolean isRerollablePriority(int maxGroupSize) {
+        // max group exists with 1 or 0 valuables and enough dice to reroll
+        return (maxGroupSize == faceValueCount[Faces.GOLD.ordinal()] && (GameManager.NUM_DICE
+                - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED)
+                || (maxGroupSize == faceValueCount[Faces.DIAMOND.ordinal()] && (GameManager.NUM_DICE
+                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED)
+                || (GameManager.NUM_DICE - faceValueCount[frequentFace.ordinal()]
+                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED;
+    }
 
     public ComboStrategy() {
         super();
-        faceValueCount = new int[6];
+        faceValueCount = new int[Faces.NUM_FACES];
     }
 
-    private void countFaceValues(Faces[] diceFaces) {
+    private void getFrequentFace(Faces[] diceFaces) {
+        // By default set to DIAMOND for simpler logic
+        frequentFace = Faces.DIAMOND;
+        int maxCount = 0;
         for (Faces face : diceFaces) {
             faceValueCount[face.ordinal()]++;
+            if (faceValueCount[face.ordinal()] > maxCount && face != Faces.SKULL) {
+                maxCount = faceValueCount[face.ordinal()];
+                frequentFace = face;
+                logger.debug("%s is the most frequent face", frequentFace);
+            }
         }
     }
 
@@ -33,9 +55,12 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    private void setUnvaluables(Faces[] diceFaces) {
+    private void setUnvaluables(boolean followFrequent, Faces[] diceFaces) {
         for (int i = 0; i < diceFaces.length; i++) {
-            if (diceFaces[i] != Faces.SKULL && diceFaces[i] != Faces.GOLD && diceFaces[i] != Faces.DIAMOND) {
+            if (!followFrequent && diceFaces[i] != Faces.SKULL && diceFaces[i] != Faces.GOLD
+                    && diceFaces[i] != Faces.DIAMOND) {
+                setRoll(i);
+            } else if (followFrequent && diceFaces[i] != Faces.SKULL && diceFaces[i] != frequentFace) {
                 setRoll(i);
             }
         }
@@ -43,8 +68,9 @@ public class ComboStrategy extends Strategy {
 
     public void strategize(boolean firstRoll, Faces[] diceFaces) {
         resetAll();
-        countFaceValues(diceFaces);
-        endTurn = (faceValueCount[Faces.SKULL.ordinal()] >= 3);
+        // Always play it safe and call it quits when you have 1 less than the
+        // disqualified skull count
+        endTurn = (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1);
         if (endTurn) {
             return;
         }
@@ -62,25 +88,41 @@ public class ComboStrategy extends Strategy {
          * then end the turn.
          *
          */
-        int largestGroupIndex = 0, maxGroupSize = 0;
-        for (int i = 0; i < 6; i++) {
+        int maxGroupSize = 0;
+        for (int i = 0; i < Faces.NUM_FACES; i++) {
             if (faceValueCount[i] > maxGroupSize && i != Faces.SKULL.ordinal()) {
                 maxGroupSize = faceValueCount[i];
-                largestGroupIndex = i;
             }
         }
-        // Re-roll if groups are smaller than 4
+        logger.debug("The max group size is %d of %s", maxGroupSize, frequentFace);
         if (maxGroupSize < USEFUL_SET_SIZE) {
             if (GameManager.NUM_DICE - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
                     - faceValueCount[Faces.SKULL.ordinal()] > MIN_NUM_DICE_ROLLED) {
-                setUnvaluables(diceFaces);
-                return;
+                logger.debug("Rolling all non-valuables");
+                setUnvaluables(false, diceFaces);
             } else {
+                logger.debug("Reached a safety point with no sets of 4+");
                 endTurn = true;
-                return;
+            }
+        } else {
+            if ((faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
+                    && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
+                    (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
+                            && faceValueCount[Faces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)) {
+                // 4-2 4-3 4-4 gold/diamond combos
+                logger.debug("Reached a safety point with gold-diamond combo");
+                endTurn = true;
+            } else if (isRerollablePriority(maxGroupSize)) {
+                // Prioritize this max group
+                logger.debug("Rerolling with 4+ set priority on %s", frequentFace);
+                setUnvaluables(true, diceFaces);
+            } else {
+                // There is a set of >= 4 but remaining are either diamond, gold, skulls, or
+                // singleton
+                // no point in rerolling
+                logger.debug("Reached a safety point with 4+ set priority on %s", frequentFace);
+                endTurn = true;
             }
         }
-        // if (maxGroupSize >= 4) {
-        // }
     }
 }
