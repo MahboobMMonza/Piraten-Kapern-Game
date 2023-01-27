@@ -44,6 +44,6 @@
 | -   | F04 | Combo strategies | D | 01/26/2023 | 01/27/2023 |
 | x   | F05 | Three skulls disqualifies player from scoring | D | 01/27/2023 | 01/27/2023 |
 | -   | F06 | Score points: 3-of-a-kind (score calculator class) | D | 01/27/2023 | 01/27/2023 |
-| x   | F07 | Score points: All sets (sets only) | B (F06) | |
+| x   | F07 | Score points: All sets (sets only) | D | 01/27/2023 | 01/27/2023 |
 | ... | ... | ... |
 
