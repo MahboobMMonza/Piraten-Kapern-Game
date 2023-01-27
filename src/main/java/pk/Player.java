@@ -16,7 +16,7 @@ public class Player {
 
     public final int ID;
 
-    public Player(int playerID) {
+    public Player(int playerID, String strategyName) {
         score = 0;
         wins = 0;
         ID = playerID;
