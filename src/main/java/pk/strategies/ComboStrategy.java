@@ -68,13 +68,13 @@ public class ComboStrategy extends Strategy {
 
     public void strategize(boolean firstRoll, Faces[] diceFaces) {
         resetAll();
+        getFrequentFace(diceFaces);
         // Always play it safe and call it quits when you have 1 less than the
         // disqualified skull count
         endTurn = (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1);
         if (endTurn) {
             return;
         }
-        getFrequentFace(diceFaces);
         /*
          * Strategy:
          *
