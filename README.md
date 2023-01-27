@@ -35,9 +35,9 @@ Remark: **We are assuming here you are using a _real_ shell (e.g., anything but 
 | :-:  |:-:  |---       | :-:     | :-:       | :-:       |
 | -   | F01 | Roll eight dices  | D | 01/01/2023 | 01/23/2023 |
 | x   | F02 | End of turn with three cranes | D | 01/23/2023 | 01/25/2023 |
-| -   | F03 | Player keeping random dice to end their turn | S | 01/25/2023 | |
-| -   | F04 | Combo strategies | B (F03) | |
-| x   | F05 | Three skulls disqualifies player | P | |
+| -   | F03 | Player keeping random dice to end their turn | D | 01/25/2023 | 01/26/2023 |
+| -   | F04 | Combo strategies | S | 01/26/2023 |
+| x   | F05 | Three skulls disqualifies player from scoring | B (F04) | |
 | -   | F06 | Score points: 3-of-a-kind | P | |
 | x   | F07 | Score points: All sets (sets only) | B (F06) | |
 | ... | ... | ... |
