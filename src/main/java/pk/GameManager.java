@@ -8,6 +8,7 @@ public class GameManager {
     private Dice dice;
     private Faces[] diceFaces;
     private Player[] players;
+    private ScoreCalculator scoreCalculator;
 
     private static final Logger logger = LogManager.getFormatterLogger(GameManager.class);
 
@@ -19,7 +20,6 @@ public class GameManager {
     public static final int DEFAULT_NUM_GAMES = 42;
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
     public static final int ENDING_SCORE = 6000;
-    public static final int DNG_POINTS = 100;
 
     /*
      * public GameManager() throws IllegalArgumentException, NullPointerException {
@@ -42,6 +42,7 @@ public class GameManager {
         }
         NUM_GAMES = numGames;
         NUM_PLAYERS = playerStrategies.length;
+        scoreCalculator = new ScoreCalculator();
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
         players = new Player[NUM_PLAYERS];
@@ -59,25 +60,7 @@ public class GameManager {
     }
 
     public void assignScore(int playerID) {
-        int goldCount = 0, diamondCount = 0, skullCount = 0;
-        for (Faces face : diceFaces) {
-            if (face == Faces.GOLD) {
-                goldCount++;
-            } else if (face == Faces.DIAMOND) {
-                diamondCount++;
-            } else if (face == Faces.SKULL) {
-                skullCount++;
-            }
-        }
-        logger.debug("Player %d info :: SKULLS: %d GOLD: %d DIAMOND: %d", playerID, skullCount, goldCount,
-                diamondCount);
-        if (skullCount < DISQUALIFIED_SKULL_COUNT) {
-            players[playerID].updateScore(DNG_POINTS * (goldCount + diamondCount));
-        }
-        if (skullCount >= DISQUALIFIED_SKULL_COUNT) {
-            logger.debug("Player %d has exceeded skull count and is disqualified.",
-                    playerID);
-        }
+        players[playerID].updateScore(scoreCalculator.calculateScore(diceFaces));
     }
 
     public boolean playTurns(boolean finalTurn) {
