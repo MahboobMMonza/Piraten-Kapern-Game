@@ -7,27 +7,32 @@
 
   * To clean your working directory:
     * `mvn clean`
+  * The available strategies are ___RANDOM___ and ___COMBO___, and they must be entered with the correct spelling
+    (case-insensitive)
+    * You must enter 2 or more strategies.
   * To compile the project:
     * `mvn compile`
-  * To run the project in development mode:
-    * `mvn -q exec:java` (here, `-q` tells maven to be _quiet_)
+  * To run the project in development mode with the intended strategies (e.g. player 1 uses the _random_ strategy
+      and player 2 uses the _combo_ strategy):
+    * `mvn -q exec:java -Dexec.args="random combo"` (here, `-q` tells maven to be _quiet_)
   * To package the project as a turn-key artifact:
     * `mvn package`
-  * To run the packaged delivery:
-    * `java -jar target/piraten-karpen-jar-with-dependencies.jar`
+  * To run the packaged delivery with the strategies used in the development mode example:
+    * `java -jar target/piraten-karpen-jar-with-dependencies.jar random combo`
 
-  __NOTE__: Trace logging is automatically conducted by the system and is available in the `logs` folder.
+  Remark: **We are assuming here you are using a _real_ shell (e.g., anything but PowerShell on Windows)**
 
-Remark: **We are assuming here you are using a _real_ shell (e.g., anything but PowerShell on Windows)**
+  __NOTE__: Trace logging is automatically conducted by the system and is available in the _logs_ folder.
+
 
 ## Feature Backlog
 
- * Status:
-   * Pending (P), Started (S), Blocked (B), Done (D)
- * Definition of Done (DoD):
-   * The feature works as intended, is efficient enough for the given scale, and is well documented
-     or easy to understand. Additionally, code is written in such a manner that future MVPs that
-     require modification of the feature can be implemented with minimal changes to its dependents.
+  * Status:
+    * Pending (P), Started (S), Blocked (B), Done (D)
+  * Definition of Done (DoD):
+    * The feature works as intended, is efficient enough for the given scale, and is well documented
+      or easy to understand. Additionally, code is written in such a manner that future MVPs that
+      require modification of the feature can be implemented with minimal changes to its dependents.
 
 ### Backlog
 
