@@ -21,7 +21,7 @@ public class Player {
         wins = 0;
         ID = playerID;
         done = false;
-        strategy = new Strategy();
+        strategy = new RandomStrategy();
     }
 
     public void roll(Dice dice, Faces[] diceFaces) {
@@ -30,7 +30,7 @@ public class Player {
             diceFaces[i] = dice.roll();
         }
         logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-        strategy.strategize(diceFaces);
+        strategy.strategize(true, diceFaces);
         while (!strategy.isEndTurn()) {
             for (int i = 0; i < GameManager.NUM_DICE; i++) {
                 if (strategy.isRolled(i)) {
@@ -39,7 +39,7 @@ public class Player {
                 }
             }
             logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-            strategy.strategize(diceFaces);
+            strategy.strategize(false, diceFaces);
         }
         logger.debug("Player %d has ended their turn", ID);
     }
