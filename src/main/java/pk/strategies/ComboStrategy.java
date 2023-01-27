@@ -74,6 +74,7 @@ public class ComboStrategy extends Strategy {
         if (endTurn) {
             return;
         }
+        getFrequentFace(diceFaces);
         /*
          * Strategy:
          *
