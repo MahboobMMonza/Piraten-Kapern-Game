@@ -7,22 +7,31 @@ public abstract class Strategy {
 
     protected static final int MIN_NUM_DICE_ROLLED = 2;
 
-    private boolean endTurn;
-    private boolean[] rollList;
-
+    protected boolean endTurn;
+    protected boolean[] rollList;
 
     public Strategy() {
         rollList = new boolean[GameManager.NUM_DICE];
     }
 
-    private void resetRollList() {
+    protected void resetRollList() {
         for (int i = 0; i < rollList.length; i++) {
             rollList[i] = false;
         }
     }
 
-    private void setRoll(int index) {
+    protected void setRoll(int index) {
         rollList[index] = true;
+    }
+
+    protected int countSkulls(Faces[] diceFaces) {
+        int skullCount = 0;
+        for (Faces face : diceFaces) {
+            if (face == Faces.SKULL) {
+                skullCount++;
+            }
+        }
+        return skullCount;
     }
 
     public boolean isRolled(int index) {
@@ -33,6 +42,5 @@ public abstract class Strategy {
         return endTurn;
     }
 
-    public abstract void strategize(Faces[] diceFaces);
-
+    public abstract void strategize(boolean firstRoll, Faces[] diceFaces);
 }
