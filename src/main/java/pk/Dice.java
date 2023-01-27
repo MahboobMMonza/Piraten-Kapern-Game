@@ -12,7 +12,7 @@ public class Dice {
     }
 
     public Faces roll() {
-        return faceValues[bag.nextInt(faceValues.length)];
+        return faceValues[bag.nextInt(Faces.NUM_FACES)];
     }
 
 }
