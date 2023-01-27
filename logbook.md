@@ -34,4 +34,9 @@ Re-organized redundant classes StrategyMove and DebugLogger.
 
 ### 2023/01/26
 Abstracted Strategy class, old class became RandomStrategy. Completed RandomStrategy
-class.
+class. Completed F03.
+
+### 2023/01/27
+Completed F04.
+
+
