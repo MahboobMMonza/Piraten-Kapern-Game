@@ -9,9 +9,8 @@ public class ScoreCalculator {
 
     private static final Logger logger = LogManager.getFormatterLogger(ScoreCalculator.class);
     private static final int DNG_POINTS = 100;
-    private static final int[] SET_SCORES = { 0, 0, 0, 100/* , 200, 500, 1000, 2000, 4000 */ };
+    private static final int[] SET_SCORES = { 0, 0, 0, 100, 200, 500, 1000, 2000, 4000 };
     private final int[] faceFrequencies;
-    private static final int MAX_SET_SIZE = 3;
 
     public ScoreCalculator() {
         faceFrequencies = new int[Faces.NUM_FACES];
@@ -33,7 +32,7 @@ public class ScoreCalculator {
         if (faceFrequencies[Faces.SKULL.ordinal()] < GameManager.DISQUALIFIED_SKULL_COUNT) {
             for (int i = 0; i < Faces.NUM_FACES; i++) {
                 if (i != Faces.SKULL.ordinal()) {
-                    score += SET_SCORES[Math.min(MAX_SET_SIZE, faceFrequencies[i])];
+                    score += SET_SCORES[faceFrequencies[i]];
                 }
             }
             score += DNG_POINTS * (faceFrequencies[Faces.GOLD.ordinal()] + faceFrequencies[Faces.DIAMOND.ordinal()]);
