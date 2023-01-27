@@ -37,6 +37,4 @@ Abstracted Strategy class, old class became RandomStrategy. Completed RandomStra
 class. Completed F03.
 
 ### 2023/01/27
-Completed F04.
-
-
+Completed F04. Completed F05.
