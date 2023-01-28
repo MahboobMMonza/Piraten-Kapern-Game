@@ -45,9 +45,9 @@
 | x   | F05 | Three skulls disqualifies player from scoring | D | 01/27/2023 | 01/27/2023 |
 | -   | F06 | Score points: 3-of-a-kind (score calculator class) | D | 01/27/2023 | 01/27/2023 |
 | x   | F07 | Score points: All sets (sets only) | D | 01/27/2023 | 01/27/2023 |
-| x   | F07 | Score points: Full chest | S | 01/28/2023 | |
-| -   | F08 | Drawing cards | S | 01/27/2023 | |
-| x   | F09 | Sea Battle card integration | B (F08) | | |
-| x   | F10 | Smart Strategy | B (F09) | | |
+| x   | F08 | Score points: Full chest | D | 01/28/2023 | 01/28/2023 |
+| -   | F09 | Drawing cards | S | 01/27/2023 | |
+| x   | F10 | Sea Battle card integration | B (F09) | | |
+| x   | F11 | Smart Strategy | B (F10) | | |
 | ... | ... | ... |
 
