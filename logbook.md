@@ -38,3 +38,7 @@ class. Completed F03.
 
 ### 2023/01/27
 Completed F04. Completed F05. Completed F06. Completed F07. Created backlog for step 5.
+
+### 2023/01/28
+Completed f08 (full chest).
+
