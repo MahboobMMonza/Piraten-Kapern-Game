@@ -5,7 +5,7 @@ package pk;
  */
 public class Card {
 
-    CardTypes cardType;
+    private CardTypes cardType;
 
     public final int VALUE, BONUS_POINTS;
     public static final int NOP_CARD_VALUE = 0;
@@ -34,6 +34,9 @@ public class Card {
                 BONUS_POINTS = NOP_CARD_BONUS;
                 break;
         }
+    }
 
+    public CardTypes getCardType() {
+        return cardType;
     }
 }
