@@ -13,30 +13,17 @@ import pk.GameManager;
 public class ComboStrategy extends Strategy {
 
     private static final Logger logger = LogManager.getFormatterLogger(ComboStrategy.class);
-    private static final int USEFUL_SET_SIZE = 4;
+    protected static final int USEFUL_SET_SIZE = 4;
 
-    private int[] faceValueCount;
-    private Faces frequentFace;
-
-    private boolean isRerollablePriority(int maxGroupSize) {
-        // max group exists with 1 or 0 valuables and enough dice to reroll
-        return (maxGroupSize == faceValueCount[Faces.GOLD.ordinal()] && (GameManager.NUM_DICE
-                - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
-                - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED)
-                || (maxGroupSize == faceValueCount[Faces.DIAMOND.ordinal()] && (GameManager.NUM_DICE
-                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
-                        - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED)
-                || (GameManager.NUM_DICE - faceValueCount[frequentFace.ordinal()]
-                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
-                        - faceValueCount[Faces.SKULL.ordinal()]) > MIN_NUM_DICE_ROLLED;
-    }
+    protected int[] faceValueCount;
+    protected Faces frequentFace;
 
     public ComboStrategy() {
         super();
         faceValueCount = new int[Faces.NUM_FACES];
     }
 
-    private void getFrequentFace(Faces[] diceFaces) {
+    protected void determineFrequentFace(Faces[] diceFaces) {
         // By default set to DIAMOND for simpler logic
         frequentFace = Faces.DIAMOND;
         int maxCount = 0;
@@ -50,35 +37,45 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    private void resetAll() {
+    protected void resetAll() {
         resetRollList();
         for (int i = 0; i < faceValueCount.length; i++) {
             faceValueCount[i] = 0;
         }
     }
 
-    private void setUnvaluables(boolean followFrequent, Faces[] diceFaces) {
-        for (int i = 0; i < diceFaces.length; i++) {
-            if (!followFrequent && diceFaces[i] != Faces.SKULL && diceFaces[i] != Faces.GOLD
-                    && diceFaces[i] != Faces.DIAMOND) {
-                setRoll(i);
-            } else if (followFrequent && diceFaces[i] != Faces.SKULL && diceFaces[i] != frequentFace) {
-                setRoll(i);
-            }
-        }
+    protected boolean isRerollable(boolean followFrequent, Faces face) {
+        return (face != Faces.SKULL && ((!followFrequent && face != Faces.GOLD
+                && face != Faces.DIAMOND) || (followFrequent && face != frequentFace)));
     }
 
-    private boolean determineEndTurn(Card card) {
+    protected void setUnvaluables(boolean followFrequent, Faces[] diceFaces) {
+        int rollCount = 0;
+        for (int i = 0; i < diceFaces.length; i++) {
+            if (isRerollable(followFrequent, diceFaces[i])) {
+                setRoll(i);
+                rollCount++;
+            }
+        }
+        endTurn = rollCount < MIN_NUM_DICE_ROLLED;
+        logger.debug("Player ending turn: %b", endTurn);
+    }
+
+    protected boolean determineEndTurn(Card card) {
         return (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
                 || (card.getCardType() != CardTypes.SEA_BATTLE
                         && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1)
                 || card.getCardType() == CardTypes.SEA_BATTLE && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
     }
 
-    private void seaBattleStrats(Faces[] diceFaces) {
-        logger.debug("Player is engaged in a sea battle!");
+    protected void seaBattleStrats(Card card, Faces[] diceFaces) {
+        logger.debug("Player is engaged in a sea battle and requires %d SABERs!", card.VALUE);
         frequentFace = Faces.SABER;
-        setUnvaluables(true, diceFaces);
+        if (GameManager.NUM_DICE - faceValueCount[Faces.SABER.ordinal()]
+                - faceValueCount[Faces.SKULL.ordinal()] >= MIN_NUM_DICE_ROLLED) {
+            logger.debug("Not enough swords in sea battle :: re-rolling non-sabers");
+            setUnvaluables(true, diceFaces);
+        }
     }
 
     private void normalStrats(Faces[] diceFaces) {
@@ -104,39 +101,25 @@ public class ComboStrategy extends Strategy {
         }
         logger.debug("The max group size is %d of %s", maxGroupSize, frequentFace);
         if (maxGroupSize < USEFUL_SET_SIZE) {
-            if (GameManager.NUM_DICE - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
-                    - faceValueCount[Faces.SKULL.ordinal()] > MIN_NUM_DICE_ROLLED) {
-                logger.debug("Rolling all non-valuables");
-                setUnvaluables(false, diceFaces);
-            } else {
-                logger.debug("Reached a safety point with no sets of 4+");
-                endTurn = true;
-            }
+            logger.debug("No useful sets found. Re-rolling all non-valuables");
+            setUnvaluables(false, diceFaces);
+        } else if ((faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
+                && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
+                (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
+                        && faceValueCount[Faces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)) {
+            // 4-2 4-3 4-4 gold/diamond combos
+            logger.debug("Reached a safety point with gold-diamond combo");
+            endTurn = true;
         } else {
-            if ((faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
-                    && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
-                    (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
-                            && faceValueCount[Faces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)) {
-                // 4-2 4-3 4-4 gold/diamond combos
-                logger.debug("Reached a safety point with gold-diamond combo");
-                endTurn = true;
-            } else if (isRerollablePriority(maxGroupSize)) {
-                // Prioritize this max group
-                logger.debug("Rerolling with 4+ set priority on %s", frequentFace);
-                setUnvaluables(true, diceFaces);
-            } else {
-                // There is a set of >= 4 but remaining are either diamond, gold, skulls, or
-                // singleton
-                // no point in rerolling
-                logger.debug("Reached a safety point with 4+ set priority on %s", frequentFace);
-                endTurn = true;
-            }
+            // There is a useful set to work with
+            logger.debug("Useful sets found. Re-rolling all non-valuables");
+            setUnvaluables(true, diceFaces);
         }
     }
 
     public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
         resetAll();
-        getFrequentFace(diceFaces);
+        determineFrequentFace(diceFaces);
         // Always play it safe and call it quits when you have 1 less than the
         // disqualified skull count
         endTurn = determineEndTurn(card);
@@ -145,7 +128,7 @@ public class ComboStrategy extends Strategy {
         }
         switch (card.getCardType()) {
             case SEA_BATTLE:
-                seaBattleStrats(diceFaces);
+                seaBattleStrats(card, diceFaces);
                 break;
             default:
                 normalStrats(diceFaces);
