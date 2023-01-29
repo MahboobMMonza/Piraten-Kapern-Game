@@ -48,7 +48,7 @@
 | x   | F08 | Score points: Full chest | D | 01/28/2023 | 01/28/2023 |
 | -   | F09 | Drawing cards | D | 01/27/2023 | 01/28/2023 |
 | x   | F10 | Sea Battle card integration | D | 01/28/2023 | 01/29/2023 |
-| x   | F11 | Smart Strategy | B (F10) | | |
+| x   | F11 | Smart Strategy | D | 01/29/2023 | 01/29/2023 |
 | x   | F12 | Shuffling the deck | P | | |
 | ... | ... | ... |
 
