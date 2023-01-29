@@ -14,10 +14,10 @@ public class CardDeck {
     private List<Card> deck;
     private int currentIndex;
 
-    public final int CARD_DECK_SIZE; // Should always be 35
+    public final int CARD_DECK_SIZE = 35;
 
-    private static final int NUM_CARDS_PER_SEA_BATTLE = 2;
-    private static final int NUM_NOP_CARDS = 29;
+    public static final int NUM_MONKEY_BUSINESS_CARDS = 4;
+    public static final int NUM_CARDS_PER_SEA_BATTLE = 2;
     private static final int[][] SEA_BATTLE_INFO;
 
     static {
@@ -39,11 +39,13 @@ public class CardDeck {
                 deck.add(new Card(CardTypes.SEA_BATTLE, info[0], info[1]));
             }
         }
-        for (int i = 0; i < NUM_NOP_CARDS; i++) {
+        for (int i = 0; i < NUM_MONKEY_BUSINESS_CARDS; i++) {
+            deck.add(new Card(CardTypes.MONKEY_BUSINESS));
+        }
+        while (deck.size() < CARD_DECK_SIZE) {
             deck.add(new Card(CardTypes.NOP));
         }
         currentIndex = 0;
-        CARD_DECK_SIZE = deck.size();
     }
 
     public void shuffleDeck() {
@@ -52,7 +54,7 @@ public class CardDeck {
     }
 
     private void updateCurrentIndex() {
-        // Redundent constant to ensure the value stays >= 0
+        // Redundent constant to ensure the value stays >= 0 after modulus
         currentIndex = (currentIndex + 1 + CARD_DECK_SIZE) % CARD_DECK_SIZE;
         if (currentIndex == 0) {
             shuffleDeck();
