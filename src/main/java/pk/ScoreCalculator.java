@@ -38,12 +38,17 @@ public class ScoreCalculator {
         return (scoringDice == GameManager.NUM_DICE);
     }
 
-    public int calculateScore(Faces[] diceFaces) {
+    public int calculateScore(Card card, Faces[] diceFaces) {
         int score = 0;
         countFrequencies(diceFaces);
         logger.debug("Player info :: %s", Arrays.toString(faceFrequencies));
-        if (faceFrequencies[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT) {
-            logger.debug("Player has exceeded skull count and is disqualified.");
+        if (faceFrequencies[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
+                || (card.getCardType() == CardTypes.SEA_BATTLE
+                        && faceFrequencies[Faces.SABER.ordinal()] < card.VALUE)) {
+            logger.debug("Player has not met scoring requirements and is disqualified.");
+            if (card.getCardType() == CardTypes.SEA_BATTLE) {
+                score -= card.BONUS_POINTS;
+            }
             return score;
         }
         for (int i = 0; i < Faces.NUM_FACES; i++) {
@@ -55,6 +60,10 @@ public class ScoreCalculator {
         if (hasFullChest()) {
             score += FULL_CHEST_POINTS;
             logger.debug("Player has a full chest!");
+        }
+        if (card.getCardType() == CardTypes.SEA_BATTLE) {
+            logger.debug("Player has won the sea battle!");
+            score += card.BONUS_POINTS;
         }
         logger.debug("Player's score changes by %d", score);
         return score;
