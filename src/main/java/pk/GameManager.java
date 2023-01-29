@@ -110,6 +110,8 @@ public class GameManager {
 
     public void playGame() {
         boolean finalTurn = false;
+        deck.resetTopIndex();
+        deck.shuffleDeck();
         while (!finalTurn) {
             finalTurn = playTurns(finalTurn);
             if (finalTurn) {
