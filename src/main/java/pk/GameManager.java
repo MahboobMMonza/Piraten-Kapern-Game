@@ -17,6 +17,7 @@ public class GameManager {
     public final int NUM_PLAYERS;
     public static final int NUM_DICE = 8;
     public static final int MIN_PLAYERS = 2;
+    public static final int MAX_PLAYERS = 5;
     public static final int MIN_GAMES = 1;
     public static final int DEFAULT_NUM_GAMES = 42;
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
@@ -33,9 +34,9 @@ public class GameManager {
     }
 
     public GameManager(String[] playerStrategies, int numGames) throws IllegalArgumentException {
-        if (playerStrategies.length < MIN_PLAYERS) {
+        if (playerStrategies.length < MIN_PLAYERS || playerStrategies.length > MAX_PLAYERS) {
             throw new IllegalArgumentException(
-                    "ERROR: There must be at least 2 players playing. Ensure arguments were entered correctly.");
+                    "ERROR: There must be between 2-5 players playing. Ensure arguments were entered correctly.");
         }
         if (numGames < MIN_GAMES) {
             throw new IllegalArgumentException(
