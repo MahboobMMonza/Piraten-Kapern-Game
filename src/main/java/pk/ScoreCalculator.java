@@ -49,6 +49,7 @@ public class ScoreCalculator {
             if (card.getCardType() == CardTypes.SEA_BATTLE) {
                 score -= card.BONUS_POINTS;
             }
+            logger.debug("Player's score changes by %d", score);
             return score;
         }
         for (int i = 0; i < Faces.NUM_FACES; i++) {
