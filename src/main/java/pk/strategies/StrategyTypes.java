@@ -1,5 +1,5 @@
 package pk.strategies;
 
 public enum StrategyTypes {
-   RANDOM, COMBO
+   RANDOM, COMBO, SMART
 }

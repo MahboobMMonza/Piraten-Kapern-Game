@@ -32,10 +32,16 @@ public class Player {
             throw new IllegalArgumentException(
                     "ERROR: strategyName was passed as a null pointer. Ensure arguments are entered correctly.");
         }
-        if (strategyType == StrategyTypes.RANDOM) {
-            strategy = new RandomStrategy();
-        } else {
-            strategy = new ComboStrategy();
+        switch (strategyType) {
+            case SMART:
+                strategy = new SmartStrategy();
+                break;
+            case COMBO:
+                strategy = new ComboStrategy();
+                break;
+            default:
+                strategy = new RandomStrategy();
+                break;
         }
     }
 
