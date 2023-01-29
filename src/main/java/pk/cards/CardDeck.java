@@ -1,4 +1,4 @@
-package pk;
+package pk.cards;
 
 import java.util.*;
 import org.apache.logging.log4j.LogManager;
