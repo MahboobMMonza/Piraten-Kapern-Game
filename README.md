@@ -7,7 +7,7 @@
 
   * To clean your working directory:
     * `mvn clean`
-  * The available strategies are ___RANDOM___ and ___COMBO___, and they must be entered with the correct spelling
+  * The available strategies are ___RANDOM___, ___COMBO___, and __SMART__; they must be entered with the correct spelling
     (case-insensitive)
     * You must enter 2 or more strategies.
   * To compile the project:
