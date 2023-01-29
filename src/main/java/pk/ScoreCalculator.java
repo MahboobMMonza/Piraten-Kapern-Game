@@ -47,8 +47,11 @@ public class ScoreCalculator {
         for (int i = 0; i < Faces.NUM_FACES; i++) {
             if (i != Faces.SKULL.ordinal() && (faceFrequencies[i] >= MIN_SET_SIZE || i == Faces.GOLD.ordinal()
                     || i == Faces.DIAMOND.ordinal()
-                    || (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS && faceFrequencies[Faces.MONKEY.ordinal()]
-                            + faceFrequencies[Faces.PARROT.ordinal()] >= MIN_SET_SIZE))) {
+                    || (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS
+                            && faceFrequencies[Faces.MONKEY.ordinal()]
+                                    + faceFrequencies[Faces.PARROT.ordinal()] >= MIN_SET_SIZE)
+                    || (card.getCardType() == FortuneCardTypes.SEA_BATTLE
+                            && faceFrequencies[Faces.SABER.ordinal()] >= card.VALUE))) {
                 scoringDice += faceFrequencies[i];
             }
         }
