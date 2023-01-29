@@ -64,7 +64,8 @@ public class ComboStrategy extends Strategy {
         return (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
                 || (card.getCardType() != FortuneCardTypes.SEA_BATTLE
                         && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1)
-                || card.getCardType() == FortuneCardTypes.SEA_BATTLE && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
+                || card.getCardType() == FortuneCardTypes.SEA_BATTLE
+                        && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
     }
 
     protected void seaBattleStrats(FortuneCard card, Faces[] diceFaces) {
@@ -77,7 +78,7 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    private void normalStrats(Faces[] diceFaces) {
+    protected void normalStrats(Faces[] diceFaces) {
         /*
          * Strategy:
          *
@@ -116,6 +117,17 @@ public class ComboStrategy extends Strategy {
         }
     }
 
+    protected void determineTactics(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
+        switch (card.getCardType()) {
+            case SEA_BATTLE:
+                seaBattleStrats(card, diceFaces);
+                break;
+            default:
+                normalStrats(diceFaces);
+                break;
+        }
+    }
+
     public void strategize(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
         resetAll();
         determineFrequentFace(diceFaces);
@@ -125,13 +137,6 @@ public class ComboStrategy extends Strategy {
         if (endTurn) {
             return;
         }
-        switch (card.getCardType()) {
-            case SEA_BATTLE:
-                seaBattleStrats(card, diceFaces);
-                break;
-            default:
-                normalStrats(diceFaces);
-                break;
-        }
+        determineTactics(firstRoll, card, diceFaces);
     }
 }

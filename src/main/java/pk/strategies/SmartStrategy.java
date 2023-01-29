@@ -20,6 +20,10 @@ public class SmartStrategy extends ComboStrategy {
             if (card.getCardType() == FortuneCardTypes.SEA_BATTLE && diceFaces[i] == Faces.SABER
                     && saberStoreCount < card.VALUE) {
                 saberStoreCount++;
+            } else if (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS && followFrequent
+                    && frequentFace == Faces.MONKEY && diceFaces[i] != Faces.MONKEY && diceFaces[i] != Faces.PARROT) {
+                setRoll(i);
+                rollCount++;
             } else if (isRerollable(followFrequent, diceFaces[i])) {
                 setRoll(i);
                 rollCount++;
@@ -34,6 +38,29 @@ public class SmartStrategy extends ComboStrategy {
         return (card.getCardType() != FortuneCardTypes.SEA_BATTLE
                 && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1
                 || faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT);
+    }
+
+    @Override
+    protected void determineTactics(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
+        int monkeyBusinessSetSize = 0;
+        switch (card.getCardType()) {
+            case SEA_BATTLE:
+                seaBattleStrats(card, diceFaces);
+                break;
+            case MONKEY_BUSINESS:
+                logger.debug("Player is assessing monkey business tactics");
+                monkeyBusinessSetSize = faceValueCount[Faces.MONKEY.ordinal()] + faceValueCount[Faces.PARROT.ordinal()];
+                if (faceValueCount[frequentFace.ordinal()] <= monkeyBusinessSetSize) {
+                    logger.debug("Player's most frequent face is now monkeys (and parrots) of frequency %d",
+                            monkeyBusinessSetSize);
+                    frequentFace = Faces.MONKEY;
+                }
+                setUnvaluables(card, monkeyBusinessSetSize >= USEFUL_SET_SIZE, diceFaces);
+                break;
+            default:
+                normalStrats(diceFaces);
+                break;
+        }
     }
 
     @Override
