@@ -9,7 +9,7 @@
     * `mvn clean`
   * The available strategies are ___RANDOM___, ___COMBO___, and ___SMART___; they must be entered with the correct spelling
     (case-insensitive)
-    * You must enter 2 or more strategies.
+    * You must enter 2-5 strategies.
   * To compile the project:
     * `mvn compile`
   * To run the project in development mode with the intended strategies (e.g. player 1 uses the _random_ strategy
