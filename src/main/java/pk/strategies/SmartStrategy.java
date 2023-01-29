@@ -55,6 +55,13 @@ public class SmartStrategy extends ComboStrategy {
                             monkeyBusinessSetSize);
                     frequentFace = Faces.MONKEY;
                 }
+                // Don't re-roll if the cards that are being rolled are diamonds and golds
+                if (frequentFace == Faces.MONKEY && GameManager.NUM_DICE - monkeyBusinessSetSize
+                        - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()] < MIN_NUM_DICE_ROLLED) {
+                    endTurn = true;
+                    return;
+                }
                 setUnvaluables(card, monkeyBusinessSetSize >= USEFUL_SET_SIZE, diceFaces);
                 break;
             default:
