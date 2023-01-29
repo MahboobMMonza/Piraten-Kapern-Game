@@ -39,4 +39,9 @@ public class Card {
     public CardTypes getCardType() {
         return cardType;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Type: %s\tValue: %d\tBonus: %03d", cardType, VALUE, BONUS_POINTS);
+    }
 }

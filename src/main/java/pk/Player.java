@@ -87,6 +87,7 @@ public class Player {
 
     public void playTurn(Dice dice, Card card, Faces[] diceFaces) {
         logger.debug("Player %d is playing their turn.", ID);
+        logger.debug("Player's drawn card info :: %s", card);
         boolean isFirstRoll = true;
         roll(isFirstRoll, dice, diceFaces);
         strategy.strategize(isFirstRoll, card, diceFaces);
