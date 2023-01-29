@@ -1,7 +1,7 @@
 package pk.strategies;
 
 import pk.Faces;
-import pk.Card;
+import pk.cards.*;
 import pk.GameManager;
 
 public abstract class Strategy {

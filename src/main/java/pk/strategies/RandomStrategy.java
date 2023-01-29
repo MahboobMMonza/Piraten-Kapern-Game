@@ -3,7 +3,7 @@ package pk.strategies;
 import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pk.Card;
+import pk.cards.*;
 import pk.Faces;
 import pk.GameManager;
 
