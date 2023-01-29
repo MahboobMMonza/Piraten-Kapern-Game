@@ -20,6 +20,16 @@ public class RandomStrategy extends Strategy {
         rand = new Random();
     }
 
+    private int countSkulls(Faces[] diceFaces) {
+        int skullCount = 0;
+        for (Faces face : diceFaces) {
+            if (face == Faces.SKULL) {
+                skullCount++;
+            }
+        }
+        return skullCount;
+    }
+
     private boolean updateNumRolls(boolean firstRoll) {
         if (firstRoll) {
             // Decide to re-roll up to MAX_REROLLS times

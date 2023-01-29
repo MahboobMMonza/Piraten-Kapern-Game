@@ -25,16 +25,6 @@ public abstract class Strategy {
         rollList[index] = true;
     }
 
-    protected int countSkulls(Faces[] diceFaces) {
-        int skullCount = 0;
-        for (Faces face : diceFaces) {
-            if (face == Faces.SKULL) {
-                skullCount++;
-            }
-        }
-        return skullCount;
-    }
-
     public boolean isRolled(int index) {
         return rollList[index];
     }
