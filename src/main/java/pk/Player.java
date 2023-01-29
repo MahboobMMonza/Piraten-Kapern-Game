@@ -85,7 +85,7 @@ public class Player {
         strategy.strategize(isFirstRoll, card, diceFaces);
         isFirstRoll = false;
         while (!strategy.isEndTurn()) {
-            roll(false, dice, diceFaces);
+            roll(isFirstRoll, dice, diceFaces);
             strategy.strategize(isFirstRoll, card, diceFaces);
         }
         logger.debug("Player %d has ended their turn", ID);
