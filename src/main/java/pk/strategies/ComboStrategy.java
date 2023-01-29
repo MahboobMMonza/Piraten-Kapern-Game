@@ -3,6 +3,7 @@ package pk.strategies;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pk.Card;
+import pk.CardTypes;
 import pk.Faces;
 import pk.GameManager;
 
@@ -67,15 +68,19 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
-        resetAll();
-        getFrequentFace(diceFaces);
-        // Always play it safe and call it quits when you have 1 less than the
-        // disqualified skull count
-        endTurn = (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1);
-        if (endTurn) {
-            return;
-        }
+    private boolean determineEndTurn(Card card) {
+        return (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
+                || (card.getCardType() != CardTypes.SEA_BATTLE
+                        && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1)
+                || card.getCardType() == CardTypes.SEA_BATTLE && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
+    }
+
+    private void seaBattleStrats(Faces[] diceFaces) {
+        frequentFace = Faces.SABER;
+        setUnvaluables(true, diceFaces);
+    }
+
+    private void normalStrats(Faces[] diceFaces) {
         /*
          * Strategy:
          *
@@ -87,7 +92,7 @@ public class ComboStrategy extends Strategy {
          * them as well if they aren't valuables (exceptions will apply later).
          *
          * If there is a group of 4 and the remaing dice are gold and diamonds,
-         * then end the turn.
+         * then end the turn. Otherwise try to increase the count of the quadruple.
          *
          */
         int maxGroupSize = 0;
@@ -125,6 +130,25 @@ public class ComboStrategy extends Strategy {
                 logger.debug("Reached a safety point with 4+ set priority on %s", frequentFace);
                 endTurn = true;
             }
+        }
+    }
+
+    public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
+        resetAll();
+        getFrequentFace(diceFaces);
+        // Always play it safe and call it quits when you have 1 less than the
+        // disqualified skull count
+        endTurn = determineEndTurn(card);
+        if (endTurn) {
+            return;
+        }
+        switch (card.getCardType()) {
+            case SEA_BATTLE:
+                seaBattleStrats(diceFaces);
+                break;
+            default:
+                normalStrats(diceFaces);
+                break;
         }
     }
 }
