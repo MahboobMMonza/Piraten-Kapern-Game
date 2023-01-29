@@ -26,9 +26,11 @@ public class Player {
         try {
             strategyType = StrategyTypes.valueOf(strategyName);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(String.format("ERROR: %s is not a valid Strategy type. Ensure arguments are entered correctly.", strategyName));
+            throw new IllegalArgumentException(String.format(
+                    "ERROR: %s is not a valid Strategy type. Ensure arguments are entered correctly.", strategyName));
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("ERROR: strategyName was passed as a null pointer. Ensure arguments are entered correctly.");
+            throw new IllegalArgumentException(
+                    "ERROR: strategyName was passed as a null pointer. Ensure arguments are entered correctly.");
         }
         if (strategyType == StrategyTypes.RANDOM) {
             strategy = new RandomStrategy();
@@ -37,24 +39,15 @@ public class Player {
         }
     }
 
-    public void roll(Dice dice, Faces[] diceFaces) {
+    private void roll(boolean firstRoll, Dice dice, Faces[] diceFaces) {
         // Initially roll all dice
         for (int i = 0; i < GameManager.NUM_DICE; i++) {
-            diceFaces[i] = dice.roll();
+            if (strategy.isRolled(i) || firstRoll) {
+                diceFaces[i] = dice.roll();
+                logger.debug("Player %d is rolling the die at index %d", ID, i);
+            }
         }
         logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-        strategy.strategize(true, diceFaces);
-        while (!strategy.isEndTurn()) {
-            for (int i = 0; i < GameManager.NUM_DICE; i++) {
-                if (strategy.isRolled(i)) {
-                    diceFaces[i] = dice.roll();
-                    logger.debug("Player %d is rolling the die at index %d", ID, i);
-                }
-            }
-            logger.debug("Player %d rolled %s", ID, Arrays.toString(diceFaces));
-            strategy.strategize(false, diceFaces);
-        }
-        logger.debug("Player %d has ended their turn", ID);
     }
 
     public void resetPlayer() {
@@ -85,10 +78,17 @@ public class Player {
         logger.debug("Player %d's score is %d.", ID, score);
     }
 
-    public void playTurn(Dice dice, Faces[] diceFaces) {
-        // Turn playing logic - for now: roll all 8 dice once, then count score
+    public void playTurn(Dice dice, Card card, Faces[] diceFaces) {
         logger.debug("Player %d is playing their turn.", ID);
-        roll(dice, diceFaces);
+        boolean isFirstRoll = true;
+        roll(isFirstRoll, dice, diceFaces);
+        strategy.strategize(isFirstRoll, card, diceFaces);
+        isFirstRoll = false;
+        while (!strategy.isEndTurn()) {
+            roll(false, dice, diceFaces);
+            strategy.strategize(isFirstRoll, card, diceFaces);
+        }
+        logger.debug("Player %d has ended their turn", ID);
     }
 
     public void winGame() {
