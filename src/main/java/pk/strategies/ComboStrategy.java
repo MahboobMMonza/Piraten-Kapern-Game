@@ -76,6 +76,7 @@ public class ComboStrategy extends Strategy {
     }
 
     private void seaBattleStrats(Faces[] diceFaces) {
+        logger.debug("Player is engaged in a sea battle!");
         frequentFace = Faces.SABER;
         setUnvaluables(true, diceFaces);
     }
