@@ -9,6 +9,7 @@ public class GameManager {
     private Faces[] diceFaces;
     private Player[] players;
     private ScoreCalculator scoreCalculator;
+    private CardDeck deck;
 
     private static final Logger logger = LogManager.getFormatterLogger(GameManager.class);
 
@@ -45,6 +46,7 @@ public class GameManager {
         scoreCalculator = new ScoreCalculator();
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
+        deck = new CardDeck();
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < NUM_PLAYERS; i++) {
             players[i] = new Player(i, playerStrategies[i].toUpperCase().trim());
@@ -59,15 +61,16 @@ public class GameManager {
         }
     }
 
-    public void assignScore(int playerID) {
-        players[playerID].updateScore(scoreCalculator.calculateScore(diceFaces));
+    public void assignScore(int playerID, Card card) {
+        players[playerID].updateScore(scoreCalculator.calculateScore(card, diceFaces));
     }
 
     public boolean playTurns(boolean finalTurn) {
         for (Player player : players) {
             if (!player.isDone()) {
-                player.playTurn(dice, diceFaces);
-                assignScore(player.ID);
+                Card card = deck.getNextCard();
+                player.playTurn(dice, card, diceFaces);
+                assignScore(player.ID, card);
                 player.setDone(player.getScore() >= ENDING_SCORE);
                 if (!finalTurn && player.isDone()) {
                     return true;
