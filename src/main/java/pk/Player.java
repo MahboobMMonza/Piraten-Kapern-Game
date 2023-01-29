@@ -1,7 +1,7 @@
 package pk;
 
 import java.util.*;
-import pk.cards.*;
+import pk.fortune_cards.*;
 import pk.strategies.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -85,7 +85,7 @@ public class Player {
         logger.debug("Player %d's score is %d.", ID, score);
     }
 
-    public void playTurn(Dice dice, Card card, Faces[] diceFaces) {
+    public void playTurn(Dice dice, FortuneCard card, Faces[] diceFaces) {
         logger.debug("Player %d is playing their turn.", ID);
         logger.debug("Player's drawn card info :: %s", card);
         boolean isFirstRoll = true;

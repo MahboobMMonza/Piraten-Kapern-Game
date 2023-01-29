@@ -1,7 +1,7 @@
 package pk.strategies;
 
 import pk.Faces;
-import pk.cards.*;
+import pk.fortune_cards.*;
 import pk.GameManager;
 
 public abstract class Strategy {
@@ -33,5 +33,5 @@ public abstract class Strategy {
         return endTurn;
     }
 
-    public abstract void strategize(boolean firstRoll, Card card, Faces[] diceFaces);
+    public abstract void strategize(boolean firstRoll, FortuneCard card, Faces[] diceFaces);
 }

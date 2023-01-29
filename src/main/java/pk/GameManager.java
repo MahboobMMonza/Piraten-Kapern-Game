@@ -1,6 +1,6 @@
 package pk;
 
-import pk.cards.*;
+import pk.fortune_cards.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,7 +10,7 @@ public class GameManager {
     private Faces[] diceFaces;
     private Player[] players;
     private ScoreCalculator scoreCalculator;
-    private CardDeck deck;
+    private FortuneCardDeck deck;
 
     private static final Logger logger = LogManager.getFormatterLogger(GameManager.class);
 
@@ -48,7 +48,7 @@ public class GameManager {
         scoreCalculator = new ScoreCalculator();
         dice = new Dice();
         diceFaces = new Faces[NUM_DICE];
-        deck = new CardDeck();
+        deck = new FortuneCardDeck();
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < NUM_PLAYERS; i++) {
             players[i] = new Player(i, playerStrategies[i].toUpperCase().trim());
@@ -63,14 +63,14 @@ public class GameManager {
         }
     }
 
-    public void assignScore(int playerID, Card card) {
+    public void assignScore(int playerID, FortuneCard card) {
         players[playerID].updateScore(scoreCalculator.calculateScore(card, diceFaces));
     }
 
     public boolean playTurns(boolean finalTurn) {
         for (Player player : players) {
             if (!player.isDone()) {
-                Card card = deck.getNextCard();
+                FortuneCard card = deck.getNextCard();
                 player.playTurn(dice, card, diceFaces);
                 assignScore(player.ID, card);
                 player.setDone(player.getScore() >= ENDING_SCORE);

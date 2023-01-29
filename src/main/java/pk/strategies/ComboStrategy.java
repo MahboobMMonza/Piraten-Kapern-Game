@@ -2,7 +2,7 @@ package pk.strategies;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pk.cards.*;
+import pk.fortune_cards.*;
 import pk.Faces;
 import pk.GameManager;
 
@@ -60,14 +60,14 @@ public class ComboStrategy extends Strategy {
         logger.debug("Player ending turn: %b", endTurn);
     }
 
-    protected boolean determineEndTurn(Card card) {
+    protected boolean determineEndTurn(FortuneCard card) {
         return (faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
-                || (card.getCardType() != CardTypes.SEA_BATTLE
+                || (card.getCardType() != FortuneCardTypes.SEA_BATTLE
                         && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1)
-                || card.getCardType() == CardTypes.SEA_BATTLE && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
+                || card.getCardType() == FortuneCardTypes.SEA_BATTLE && faceValueCount[Faces.SABER.ordinal()] >= card.VALUE);
     }
 
-    protected void seaBattleStrats(Card card, Faces[] diceFaces) {
+    protected void seaBattleStrats(FortuneCard card, Faces[] diceFaces) {
         logger.debug("Player is engaged in a sea battle and requires %d SABERs!", card.VALUE);
         frequentFace = Faces.SABER;
         if (GameManager.NUM_DICE - faceValueCount[Faces.SABER.ordinal()]
@@ -116,7 +116,7 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
+    public void strategize(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
         resetAll();
         determineFrequentFace(diceFaces);
         // Always play it safe and call it quits when you have 1 less than the

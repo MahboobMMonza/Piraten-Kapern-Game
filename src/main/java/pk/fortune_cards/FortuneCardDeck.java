@@ -1,4 +1,4 @@
-package pk.cards;
+package pk.fortune_cards;
 
 import java.util.*;
 import org.apache.logging.log4j.LogManager;
@@ -7,11 +7,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * CardDeck
  */
-public class CardDeck {
+public class FortuneCardDeck {
 
-    private static Logger logger = LogManager.getFormatterLogger(CardDeck.class);
+    private static Logger logger = LogManager.getFormatterLogger(FortuneCardDeck.class);
 
-    private List<Card> deck;
+    private List<FortuneCard> deck;
     private int currentIndex;
 
     public final int CARD_DECK_SIZE = 35;
@@ -31,19 +31,19 @@ public class CardDeck {
         currentIndex = 0;
     }
 
-    public CardDeck() {
-        deck = new ArrayList<Card>();
+    public FortuneCardDeck() {
+        deck = new ArrayList<FortuneCard>();
         // 3 types * 2 cards per type = 6 cards
         for (int[] info : SEA_BATTLE_INFO) {
             for (int i = 0; i < NUM_CARDS_PER_SEA_BATTLE; i++) {
-                deck.add(new Card(CardTypes.SEA_BATTLE, info[0], info[1]));
+                deck.add(new FortuneCard(FortuneCardTypes.SEA_BATTLE, info[0], info[1]));
             }
         }
         for (int i = 0; i < NUM_MONKEY_BUSINESS_CARDS; i++) {
-            deck.add(new Card(CardTypes.MONKEY_BUSINESS));
+            deck.add(new FortuneCard(FortuneCardTypes.MONKEY_BUSINESS));
         }
         while (deck.size() < CARD_DECK_SIZE) {
-            deck.add(new Card(CardTypes.NOP));
+            deck.add(new FortuneCard(FortuneCardTypes.NOP));
         }
         currentIndex = 0;
     }
@@ -61,9 +61,9 @@ public class CardDeck {
         }
     }
 
-    public Card getNextCard() {
+    public FortuneCard getNextCard() {
         logger.debug("Getting card at index %d", currentIndex);
-        Card card = deck.get(currentIndex);
+        FortuneCard card = deck.get(currentIndex);
         updateCurrentIndex();
         return card;
     }

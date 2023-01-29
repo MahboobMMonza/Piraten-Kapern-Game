@@ -1,10 +1,7 @@
 package pk;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-
-import pk.cards.*;
+import java.util.*;
+import pk.fortune_cards.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,12 +42,12 @@ public class ScoreCalculator {
         }
     }
 
-    private boolean hasFullChest(Card card) {
+    private boolean hasFullChest(FortuneCard card) {
         int scoringDice = 0;
         for (int i = 0; i < Faces.NUM_FACES; i++) {
             if (i != Faces.SKULL.ordinal() && (faceFrequencies[i] >= MIN_SET_SIZE || i == Faces.GOLD.ordinal()
                     || i == Faces.DIAMOND.ordinal()
-                    || (card.getCardType() == CardTypes.MONKEY_BUSINESS && faceFrequencies[Faces.MONKEY.ordinal()]
+                    || (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS && faceFrequencies[Faces.MONKEY.ordinal()]
                             + faceFrequencies[Faces.PARROT.ordinal()] >= MIN_SET_SIZE))) {
                 scoringDice += faceFrequencies[i];
             }
@@ -58,15 +55,15 @@ public class ScoreCalculator {
         return (scoringDice == GameManager.NUM_DICE);
     }
 
-    public int calculateScore(Card card, Faces[] diceFaces) {
+    public int calculateScore(FortuneCard card, Faces[] diceFaces) {
         int score = 0;
         countFrequencies(diceFaces);
         logger.debug("Player info :: %s", Arrays.toString(faceFrequencies));
         if (faceFrequencies[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
-                || (card.getCardType() == CardTypes.SEA_BATTLE
+                || (card.getCardType() == FortuneCardTypes.SEA_BATTLE
                         && faceFrequencies[Faces.SABER.ordinal()] < card.VALUE)) {
             logger.debug("Player has not met scoring requirements and is disqualified.");
-            if (card.getCardType() == CardTypes.SEA_BATTLE) {
+            if (card.getCardType() == FortuneCardTypes.SEA_BATTLE) {
                 score -= card.BONUS_POINTS;
             }
         } else {
@@ -75,7 +72,7 @@ public class ScoreCalculator {
                     score += SET_SCORES.get(faceFrequencies[i]);
                 }
             }
-            if (card.getCardType() == CardTypes.MONKEY_BUSINESS) {
+            if (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS) {
                 score -= SET_SCORES.get(faceFrequencies[Faces.MONKEY.ordinal()]);
                 score -= SET_SCORES.get(faceFrequencies[Faces.PARROT.ordinal()]);
                 score += SET_SCORES
@@ -86,7 +83,7 @@ public class ScoreCalculator {
                 logger.debug("Player has a full chest!");
             }
             score += DNG_POINTS * (faceFrequencies[Faces.GOLD.ordinal()] + faceFrequencies[Faces.DIAMOND.ordinal()]);
-            if (card.getCardType() == CardTypes.SEA_BATTLE) {
+            if (card.getCardType() == FortuneCardTypes.SEA_BATTLE) {
                 logger.debug("Player has won the sea battle!");
                 score += card.BONUS_POINTS;
             }

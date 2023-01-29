@@ -2,7 +2,7 @@ package pk.strategies;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pk.cards.*;
+import pk.fortune_cards.*;
 import pk.Faces;
 import pk.GameManager;
 
@@ -13,11 +13,11 @@ public class SmartStrategy extends ComboStrategy {
 
     private static final Logger logger = LogManager.getFormatterLogger(SmartStrategy.class);
 
-    protected void setUnvaluables(Card card, boolean followFrequent, Faces[] diceFaces) {
+    protected void setUnvaluables(FortuneCard card, boolean followFrequent, Faces[] diceFaces) {
         int saberStoreCount = 0, rollCount = 0;
         // Set frequent to SABER if not met quota
         for (int i = 0; i < diceFaces.length; i++) {
-            if (card.getCardType() == CardTypes.SEA_BATTLE && diceFaces[i] == Faces.SABER
+            if (card.getCardType() == FortuneCardTypes.SEA_BATTLE && diceFaces[i] == Faces.SABER
                     && saberStoreCount < card.VALUE) {
                 saberStoreCount++;
             } else if (isRerollable(followFrequent, diceFaces[i])) {
@@ -30,14 +30,14 @@ public class SmartStrategy extends ComboStrategy {
     }
 
     @Override
-    protected boolean determineEndTurn(Card card) {
-        return (card.getCardType() != CardTypes.SEA_BATTLE
+    protected boolean determineEndTurn(FortuneCard card) {
+        return (card.getCardType() != FortuneCardTypes.SEA_BATTLE
                 && faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT - 1
                 || faceValueCount[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT);
     }
 
     @Override
-    protected void seaBattleStrats(Card card, Faces[] diceFaces) {
+    protected void seaBattleStrats(FortuneCard card, Faces[] diceFaces) {
         /*
          * Strategy
          *

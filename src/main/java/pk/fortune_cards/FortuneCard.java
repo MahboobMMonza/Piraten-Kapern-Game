@@ -1,17 +1,17 @@
-package pk.cards;
+package pk.fortune_cards;
 
 /**
  * Card
  */
-public class Card {
+public class FortuneCard {
 
-    private CardTypes cardType;
+    private FortuneCardTypes cardType;
 
     public final int VALUE, BONUS_POINTS;
     public static final int NO_VALUE = 0;
     public static final int NO_BONUS = 0;
 
-    protected Card(CardTypes type, int value, int bonus) {
+    protected FortuneCard(FortuneCardTypes type, int value, int bonus) {
         cardType = type;
         switch (cardType) {
             case SEA_BATTLE:
@@ -24,7 +24,7 @@ public class Card {
         }
     }
 
-    protected Card(CardTypes type) throws IllegalArgumentException {
+    protected FortuneCard(FortuneCardTypes type) throws IllegalArgumentException {
         cardType = type;
         switch (cardType) {
             case SEA_BATTLE:
@@ -36,7 +36,7 @@ public class Card {
         }
     }
 
-    public CardTypes getCardType() {
+    public FortuneCardTypes getCardType() {
         return cardType;
     }
 
