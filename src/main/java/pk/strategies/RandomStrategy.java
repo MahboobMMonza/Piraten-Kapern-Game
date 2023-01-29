@@ -3,6 +3,7 @@ package pk.strategies;
 import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pk.Card;
 import pk.Faces;
 import pk.GameManager;
 
@@ -30,7 +31,7 @@ public class RandomStrategy extends Strategy {
         return (numRolls == 0);
     }
 
-    public void strategize(boolean firstRoll, Faces[] diceFaces) {
+    public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
         resetRollList();
         endTurn = updateNumRolls(firstRoll);
         if (endTurn) {

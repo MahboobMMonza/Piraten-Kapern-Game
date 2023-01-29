@@ -2,6 +2,7 @@ package pk.strategies;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import pk.Card;
 import pk.Faces;
 import pk.GameManager;
 
@@ -66,7 +67,7 @@ public class ComboStrategy extends Strategy {
         }
     }
 
-    public void strategize(boolean firstRoll, Faces[] diceFaces) {
+    public void strategize(boolean firstRoll, Card card, Faces[] diceFaces) {
         resetAll();
         getFrequentFace(diceFaces);
         // Always play it safe and call it quits when you have 1 less than the
