@@ -86,15 +86,14 @@ public class ComboStrategy extends Strategy {
                 (faceValueCount[DiceFaces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
                         && faceValueCount[DiceFaces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)
                 ||
-                (maxGroupSize == faceValueCount[DiceFaces.GOLD.ordinal()] && (GameManager.NUM_DICE
+                ((maxGroupSize == faceValueCount[DiceFaces.GOLD.ordinal()]
+                        || maxGroupSize == faceValueCount[DiceFaces.DIAMOND.ordinal()])
+                        && (GameManager.NUM_DICE
+                                - faceValueCount[DiceFaces.DIAMOND.ordinal()] - faceValueCount[DiceFaces.GOLD.ordinal()]
+                                - faceValueCount[DiceFaces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED)
+                || (maxGroupSize >= USEFUL_SET_SIZE && (GameManager.NUM_DICE - faceValueCount[frequentFace.ordinal()]
                         - faceValueCount[DiceFaces.DIAMOND.ordinal()] - faceValueCount[DiceFaces.GOLD.ordinal()]
-                        - faceValueCount[DiceFaces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED)
-                || (maxGroupSize == faceValueCount[DiceFaces.DIAMOND.ordinal()] && (GameManager.NUM_DICE
-                        - faceValueCount[DiceFaces.DIAMOND.ordinal()] - faceValueCount[DiceFaces.GOLD.ordinal()]
-                        - faceValueCount[DiceFaces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED)
-                || (GameManager.NUM_DICE - faceValueCount[frequentFace.ordinal()]
-                        - faceValueCount[DiceFaces.DIAMOND.ordinal()] - faceValueCount[DiceFaces.GOLD.ordinal()]
-                        - faceValueCount[DiceFaces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED;
+                        - faceValueCount[DiceFaces.SKULL.ordinal()] < MIN_NUM_DICE_ROLLED));
     }
 
     protected void normalStrats(FortuneCard card, DiceFaces[] diceFaces) {
