@@ -1,6 +1,7 @@
 package pk;
 
 import java.util.*;
+import pk.dice.DiceFaces;
 import pk.fortune_cards.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,62 +31,62 @@ public class ScoreCalculator {
     }
 
     public ScoreCalculator() {
-        faceFrequencies = new int[Faces.NUM_FACES];
+        faceFrequencies = new int[DiceFaces.NUM_FACES];
     }
 
-    private void countFrequencies(Faces[] diceFaces) {
-        for (int i = 0; i < Faces.NUM_FACES; i++) {
+    private void countFrequencies(DiceFaces[] diceFaces) {
+        for (int i = 0; i < DiceFaces.NUM_FACES; i++) {
             faceFrequencies[i] = 0;
         }
-        for (Faces face : diceFaces) {
+        for (DiceFaces face : diceFaces) {
             faceFrequencies[face.ordinal()]++;
         }
     }
 
     private boolean hasFullChest(FortuneCard card) {
         int scoringDice = 0;
-        for (int i = 0; i < Faces.NUM_FACES; i++) {
-            if (i != Faces.SKULL.ordinal() && (faceFrequencies[i] >= MIN_SET_SIZE || i == Faces.GOLD.ordinal()
-                    || i == Faces.DIAMOND.ordinal()
+        for (int i = 0; i < DiceFaces.NUM_FACES; i++) {
+            if (i != DiceFaces.SKULL.ordinal() && (faceFrequencies[i] >= MIN_SET_SIZE || i == DiceFaces.GOLD.ordinal()
+                    || i == DiceFaces.DIAMOND.ordinal()
                     || (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS
-                            && faceFrequencies[Faces.MONKEY.ordinal()]
-                                    + faceFrequencies[Faces.PARROT.ordinal()] >= MIN_SET_SIZE)
+                            && faceFrequencies[DiceFaces.MONKEY.ordinal()]
+                                    + faceFrequencies[DiceFaces.PARROT.ordinal()] >= MIN_SET_SIZE)
                     || (card.getCardType() == FortuneCardTypes.SEA_BATTLE
-                            && faceFrequencies[Faces.SABER.ordinal()] >= card.VALUE))) {
+                            && faceFrequencies[DiceFaces.SABER.ordinal()] >= card.VALUE))) {
                 scoringDice += faceFrequencies[i];
             }
         }
         return (scoringDice == GameManager.NUM_DICE);
     }
 
-    public int calculateScore(FortuneCard card, Faces[] diceFaces) {
+    public int calculateScore(FortuneCard card, DiceFaces[] diceFaces) {
         int score = 0;
         countFrequencies(diceFaces);
         logger.debug("Player info :: %s", Arrays.toString(faceFrequencies));
-        if (faceFrequencies[Faces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
+        if (faceFrequencies[DiceFaces.SKULL.ordinal()] >= GameManager.DISQUALIFIED_SKULL_COUNT
                 || (card.getCardType() == FortuneCardTypes.SEA_BATTLE
-                        && faceFrequencies[Faces.SABER.ordinal()] < card.VALUE)) {
+                        && faceFrequencies[DiceFaces.SABER.ordinal()] < card.VALUE)) {
             logger.debug("Player has not met scoring requirements and is disqualified.");
             if (card.getCardType() == FortuneCardTypes.SEA_BATTLE) {
                 score -= card.BONUS_POINTS;
             }
         } else {
-            for (int i = 0; i < Faces.NUM_FACES; i++) {
-                if (i != Faces.SKULL.ordinal()) {
+            for (int i = 0; i < DiceFaces.NUM_FACES; i++) {
+                if (i != DiceFaces.SKULL.ordinal()) {
                     score += SET_SCORES.get(faceFrequencies[i]);
                 }
             }
             if (card.getCardType() == FortuneCardTypes.MONKEY_BUSINESS) {
-                score -= SET_SCORES.get(faceFrequencies[Faces.MONKEY.ordinal()]);
-                score -= SET_SCORES.get(faceFrequencies[Faces.PARROT.ordinal()]);
+                score -= SET_SCORES.get(faceFrequencies[DiceFaces.MONKEY.ordinal()]);
+                score -= SET_SCORES.get(faceFrequencies[DiceFaces.PARROT.ordinal()]);
                 score += SET_SCORES
-                        .get(faceFrequencies[Faces.PARROT.ordinal()] + faceFrequencies[Faces.MONKEY.ordinal()]);
+                        .get(faceFrequencies[DiceFaces.PARROT.ordinal()] + faceFrequencies[DiceFaces.MONKEY.ordinal()]);
             }
             if (hasFullChest(card)) {
                 score += FULL_CHEST_POINTS;
                 logger.debug("Player has a full chest!");
             }
-            score += DNG_POINTS * (faceFrequencies[Faces.GOLD.ordinal()] + faceFrequencies[Faces.DIAMOND.ordinal()]);
+            score += DNG_POINTS * (faceFrequencies[DiceFaces.GOLD.ordinal()] + faceFrequencies[DiceFaces.DIAMOND.ordinal()]);
             if (card.getCardType() == FortuneCardTypes.SEA_BATTLE) {
                 logger.debug("Player has won the sea battle!");
                 score += card.BONUS_POINTS;

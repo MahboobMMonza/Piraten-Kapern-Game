@@ -1,13 +1,14 @@
 package pk;
 
 import pk.fortune_cards.*;
+import pk.dice.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GameManager {
 
     private Dice dice;
-    private Faces[] diceFaces;
+    private DiceFaces[] diceFaces;
     private Player[] players;
     private ScoreCalculator scoreCalculator;
     private FortuneCardDeck deck;
@@ -47,7 +48,7 @@ public class GameManager {
         NUM_PLAYERS = playerStrategies.length;
         scoreCalculator = new ScoreCalculator();
         dice = new Dice();
-        diceFaces = new Faces[NUM_DICE];
+        diceFaces = new DiceFaces[NUM_DICE];
         deck = new FortuneCardDeck();
         players = new Player[NUM_PLAYERS];
         for (int i = 0; i < NUM_PLAYERS; i++) {

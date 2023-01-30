@@ -4,7 +4,7 @@ import java.util.Random;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pk.fortune_cards.*;
-import pk.Faces;
+import pk.dice.DiceFaces;
 import pk.GameManager;
 
 public class RandomStrategy extends Strategy {
@@ -20,10 +20,10 @@ public class RandomStrategy extends Strategy {
         rand = new Random();
     }
 
-    private int countSkulls(Faces[] diceFaces) {
+    private int countSkulls(DiceFaces[] diceFaces) {
         int skullCount = 0;
-        for (Faces face : diceFaces) {
-            if (face == Faces.SKULL) {
+        for (DiceFaces face : diceFaces) {
+            if (face == DiceFaces.SKULL) {
                 skullCount++;
             }
         }
@@ -41,7 +41,7 @@ public class RandomStrategy extends Strategy {
         return (numRolls == 0);
     }
 
-    public void strategize(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
+    public void strategize(boolean firstRoll, FortuneCard card, DiceFaces[] diceFaces) {
         resetRollList();
         endTurn = updateNumRolls(firstRoll);
         if (endTurn) {
@@ -60,7 +60,7 @@ public class RandomStrategy extends Strategy {
         logger.debug("Rolling %d dice", numDiceRoll);
         for (int i = 0; i < numDiceRoll; i++) {
             diceIndex = rand.nextInt(GameManager.NUM_DICE);
-            while (isRolled(diceIndex) || diceFaces[diceIndex] == Faces.SKULL) {
+            while (isRolled(diceIndex) || diceFaces[diceIndex] == DiceFaces.SKULL) {
                 diceIndex = rand.nextInt(GameManager.NUM_DICE);
             }
             // logger.debug("Rolling the dice at index %d", diceIndex);
