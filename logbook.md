@@ -45,3 +45,8 @@ Completed F08 (full chest). Completed F09.
 ### 2023/01/29
 Completed F10. Completed F11. Completed F12. Completed F13. Completed F14. Cleaned up file
 structure to be more organized.
+
+## Additional Note
+I would just like to note that I did this in Vim with basically just an LSP/linter and no
+debug adapters set up 💀. Would love if someone went over debug adapter protocols, etc. at
+some point during class.
