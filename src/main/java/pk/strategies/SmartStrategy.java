@@ -42,32 +42,39 @@ public class SmartStrategy extends ComboStrategy {
 
     @Override
     protected void determineTactics(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
-        int monkeyBusinessSetSize = 0;
         switch (card.getCardType()) {
             case SEA_BATTLE:
                 seaBattleStrats(card, diceFaces);
                 break;
             case MONKEY_BUSINESS:
-                logger.debug("Player is assessing monkey business tactics");
-                monkeyBusinessSetSize = faceValueCount[Faces.MONKEY.ordinal()] + faceValueCount[Faces.PARROT.ordinal()];
-                if (faceValueCount[frequentFace.ordinal()] <= monkeyBusinessSetSize) {
-                    logger.debug("Player's most frequent face is now monkeys (and parrots) of frequency %d",
-                            monkeyBusinessSetSize);
-                    frequentFace = Faces.MONKEY;
-                }
-                // Don't re-roll if the cards that are being rolled are diamonds and golds
-                if (frequentFace == Faces.MONKEY && GameManager.NUM_DICE - monkeyBusinessSetSize
-                        - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
-                        - faceValueCount[Faces.SKULL.ordinal()] < MIN_NUM_DICE_ROLLED) {
-                    endTurn = true;
-                    return;
-                }
-                setUnvaluables(card, monkeyBusinessSetSize >= USEFUL_SET_SIZE, diceFaces);
+                monkeyBusinessStrats(card, diceFaces);
                 break;
             default:
                 normalStrats(diceFaces);
                 break;
         }
+    }
+
+    protected void monkeyBusinessStrats(FortuneCard card, Faces[] diceFaces) {
+        int monkeyBusinessSetSize = 0;
+        logger.debug("Player is assessing monkey business tactics");
+        monkeyBusinessSetSize = faceValueCount[Faces.MONKEY.ordinal()] + faceValueCount[Faces.PARROT.ordinal()];
+        if (faceValueCount[frequentFace.ordinal()] <= monkeyBusinessSetSize) {
+            logger.debug("Player's most frequent face is now monkeys (and parrots) of frequency %d",
+                    monkeyBusinessSetSize);
+            frequentFace = Faces.MONKEY;
+        } else {
+            normalStrats(diceFaces);
+            return;
+        }
+        // Don't re-roll if the cards that are being rolled are diamonds and golds
+        if (frequentFace == Faces.MONKEY && GameManager.NUM_DICE - monkeyBusinessSetSize
+                - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
+                - faceValueCount[Faces.SKULL.ordinal()] < MIN_NUM_DICE_ROLLED) {
+            endTurn = true;
+            return;
+        }
+        setUnvaluables(card, monkeyBusinessSetSize >= USEFUL_SET_SIZE, diceFaces);
     }
 
     @Override
