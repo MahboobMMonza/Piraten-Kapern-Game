@@ -78,6 +78,24 @@ public class ComboStrategy extends Strategy {
         }
     }
 
+    protected boolean isSafetyPoint(int maxGroupSize) {
+        // Any group of 4 where there isn't at least 2 non-valuables to roll or 4-2/4-3/4-4 gold diamond combos
+        return (faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
+                && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
+                (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
+                        && faceValueCount[Faces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)
+                ||
+                (maxGroupSize == faceValueCount[Faces.GOLD.ordinal()] && (GameManager.NUM_DICE
+                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED)
+                || (maxGroupSize == faceValueCount[Faces.DIAMOND.ordinal()] && (GameManager.NUM_DICE
+                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED)
+                || (GameManager.NUM_DICE - faceValueCount[frequentFace.ordinal()]
+                        - faceValueCount[Faces.DIAMOND.ordinal()] - faceValueCount[Faces.GOLD.ordinal()]
+                        - faceValueCount[Faces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED;
+    }
+
     protected void normalStrats(Faces[] diceFaces) {
         /*
          * Strategy:
@@ -93,22 +111,13 @@ public class ComboStrategy extends Strategy {
          * then end the turn. Otherwise try to increase the count of the quadruple.
          *
          */
-        int maxGroupSize = 0;
-        for (int i = 0; i < Faces.NUM_FACES; i++) {
-            if (faceValueCount[i] > maxGroupSize && i != Faces.SKULL.ordinal()) {
-                maxGroupSize = faceValueCount[i];
-            }
-        }
+        int maxGroupSize = faceValueCount[frequentFace.ordinal()];
         logger.debug("The max group size is %d of %s", maxGroupSize, frequentFace);
         if (maxGroupSize < USEFUL_SET_SIZE) {
             logger.debug("No useful sets found. Re-rolling all non-valuables");
             setUnvaluables(false, diceFaces);
-        } else if ((faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
-                && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
-                (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
-                        && faceValueCount[Faces.GOLD.ordinal()] >= MIN_NUM_DICE_ROLLED)) {
-            // 4-2 4-3 4-4 gold/diamond combos
-            logger.debug("Reached a safety point with gold-diamond combo");
+        } else if (isSafetyPoint(maxGroupSize)) {
+            logger.debug("Reached a safety point and will end the turn.");
             endTurn = true;
         } else {
             // There is a useful set to work with
