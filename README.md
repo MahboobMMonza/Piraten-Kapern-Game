@@ -51,6 +51,6 @@
 | x   | F11 | Smart Strategy | D | 01/29/2023 | 01/29/2023 |
 | x   | F12 | Shuffling the deck | D | 01/29/2023 | 01/29/2023 |
 | x   | F13 | Monkey business in deck | D | 01/29/2023 | 01/29/2023 |
-| x   | F14 | Monkey business integration in smart strategy | P | 01/29/2023 | |
+| x   | F14 | Monkey business integration in smart strategy | D | 01/29/2023 | 01/29/2023 |
 | ... | ... | ... |
 
