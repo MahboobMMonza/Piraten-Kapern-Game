@@ -48,7 +48,7 @@ public class ComboStrategy extends Strategy {
                 && face != Faces.DIAMOND) || (followFrequent && face != frequentFace)));
     }
 
-    protected void setUnvaluables(boolean followFrequent, Faces[] diceFaces) {
+    protected void setUnvaluables(FortuneCard card, boolean followFrequent, Faces[] diceFaces) {
         int rollCount = 0;
         for (int i = 0; i < diceFaces.length; i++) {
             if (isRerollable(followFrequent, diceFaces[i])) {
@@ -74,12 +74,13 @@ public class ComboStrategy extends Strategy {
         if (GameManager.NUM_DICE - faceValueCount[Faces.SABER.ordinal()]
                 - faceValueCount[Faces.SKULL.ordinal()] >= MIN_NUM_DICE_ROLLED) {
             logger.debug("Not enough swords in sea battle :: re-rolling non-sabers");
-            setUnvaluables(true, diceFaces);
+            setUnvaluables(card, true, diceFaces);
         }
     }
 
     protected boolean isSafetyPoint(int maxGroupSize) {
-        // Any group of 4 where there isn't at least 2 non-valuables to roll or 4-2/4-3/4-4 gold diamond combos
+        // Any group of 4 where there isn't at least 2 non-valuables to roll or
+        // 4-2/4-3/4-4 gold diamond combos
         return (faceValueCount[Faces.GOLD.ordinal()] == USEFUL_SET_SIZE
                 && faceValueCount[Faces.DIAMOND.ordinal()] >= MIN_NUM_DICE_ROLLED) ||
                 (faceValueCount[Faces.DIAMOND.ordinal()] == USEFUL_SET_SIZE
@@ -96,7 +97,7 @@ public class ComboStrategy extends Strategy {
                         - faceValueCount[Faces.SKULL.ordinal()]) < MIN_NUM_DICE_ROLLED;
     }
 
-    protected void normalStrats(Faces[] diceFaces) {
+    protected void normalStrats(FortuneCard card, Faces[] diceFaces) {
         /*
          * Strategy:
          *
@@ -111,18 +112,14 @@ public class ComboStrategy extends Strategy {
          * then end the turn. Otherwise try to increase the count of the quadruple.
          *
          */
-        int maxGroupSize = faceValueCount[frequentFace.ordinal()];
-        logger.debug("The max group size is %d of %s", maxGroupSize, frequentFace);
-        if (maxGroupSize < USEFUL_SET_SIZE) {
-            logger.debug("No useful sets found. Re-rolling all non-valuables");
-            setUnvaluables(false, diceFaces);
-        } else if (isSafetyPoint(maxGroupSize)) {
+        logger.debug("The max group size is %d of %s", faceValueCount[frequentFace.ordinal()], frequentFace);
+        if (isSafetyPoint(faceValueCount[frequentFace.ordinal()])) {
             logger.debug("Reached a safety point and will end the turn.");
             endTurn = true;
         } else {
             // There is a useful set to work with
             logger.debug("Useful sets found. Re-rolling all non-valuables");
-            setUnvaluables(true, diceFaces);
+            setUnvaluables(card, faceValueCount[frequentFace.ordinal()] >= USEFUL_SET_SIZE, diceFaces);
         }
     }
 
@@ -132,7 +129,7 @@ public class ComboStrategy extends Strategy {
                 seaBattleStrats(card, diceFaces);
                 break;
             default:
-                normalStrats(diceFaces);
+                normalStrats(card, diceFaces);
                 break;
         }
     }
