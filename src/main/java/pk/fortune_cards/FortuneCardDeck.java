@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * CardDeck
+ * FortuneCardDeck
  */
 public class FortuneCardDeck {
 
@@ -14,8 +14,7 @@ public class FortuneCardDeck {
     private List<FortuneCard> deck;
     private int currentIndex;
 
-    public final int CARD_DECK_SIZE = 35;
-
+    public static final int CARD_DECK_SIZE = 35;
     public static final int NUM_MONKEY_BUSINESS_CARDS = 4;
     public static final int NUM_CARDS_PER_SEA_BATTLE = 2;
     private static final int[][] SEA_BATTLE_INFO;
