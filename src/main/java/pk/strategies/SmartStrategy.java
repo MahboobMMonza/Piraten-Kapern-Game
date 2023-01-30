@@ -13,6 +13,7 @@ public class SmartStrategy extends ComboStrategy {
 
     private static final Logger logger = LogManager.getFormatterLogger(SmartStrategy.class);
 
+    @Override
     protected void setUnvaluables(FortuneCard card, boolean followFrequent, Faces[] diceFaces) {
         int saberStoreCount = 0, rollCount = 0;
         // Set frequent to SABER if not met quota
@@ -42,6 +43,7 @@ public class SmartStrategy extends ComboStrategy {
 
     @Override
     protected void determineTactics(boolean firstRoll, FortuneCard card, Faces[] diceFaces) {
+        // Determine which strategy path to take based on the fortune card
         switch (card.getCardType()) {
             case SEA_BATTLE:
                 seaBattleStrats(card, diceFaces);
@@ -50,31 +52,29 @@ public class SmartStrategy extends ComboStrategy {
                 monkeyBusinessStrats(card, diceFaces);
                 break;
             default:
-                normalStrats(diceFaces);
+                normalStrats(card, diceFaces);
                 break;
         }
     }
 
     protected void monkeyBusinessStrats(FortuneCard card, Faces[] diceFaces) {
-        int monkeyBusinessSetSize = 0;
+        /*
+         * Strategy
+         *
+         * Combine the monkey and parrot count and follow the normal strategy - the
+         * overriden setUnvaluables() method will account for the monkey business
+         * fortune card.
+         *
+         */
         logger.debug("Player is assessing monkey business tactics");
-        monkeyBusinessSetSize = faceValueCount[Faces.MONKEY.ordinal()] + faceValueCount[Faces.PARROT.ordinal()];
-        if (faceValueCount[frequentFace.ordinal()] <= monkeyBusinessSetSize) {
+        faceValueCount[Faces.MONKEY.ordinal()] += faceValueCount[Faces.PARROT.ordinal()];
+        faceValueCount[Faces.PARROT.ordinal()] = 0;
+        if (faceValueCount[frequentFace.ordinal()] <= faceValueCount[Faces.MONKEY.ordinal()]) {
             logger.debug("Player's most frequent face is now monkeys (and parrots) of frequency %d",
-                    monkeyBusinessSetSize);
+                    faceValueCount[Faces.MONKEY.ordinal()]);
             frequentFace = Faces.MONKEY;
-        } else {
-            normalStrats(diceFaces);
-            return;
         }
-        // Don't re-roll if the cards that are being rolled are diamonds and golds
-        if (frequentFace == Faces.MONKEY && GameManager.NUM_DICE - monkeyBusinessSetSize
-                - faceValueCount[Faces.GOLD.ordinal()] - faceValueCount[Faces.DIAMOND.ordinal()]
-                - faceValueCount[Faces.SKULL.ordinal()] < MIN_NUM_DICE_ROLLED) {
-            endTurn = true;
-            return;
-        }
-        setUnvaluables(card, monkeyBusinessSetSize >= USEFUL_SET_SIZE, diceFaces);
+        normalStrats(card, diceFaces);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class SmartStrategy extends ComboStrategy {
         if (faceValueCount[Faces.SABER.ordinal()] < card.VALUE) {
             logger.debug("Not enough swords in sea battle :: re-rolling non-sabers");
             frequentFace = Faces.SABER;
-            setUnvaluables(true, diceFaces);
+            setUnvaluables(card, true, diceFaces);
         } else if (faceValueCount[Faces.SABER.ordinal()] >= card.VALUE
                 && faceValueCount[Faces.SKULL.ordinal()] == GameManager.DISQUALIFIED_SKULL_COUNT - 1) {
             logger.debug("Player has obtained enough swords and will not risk skulls");
