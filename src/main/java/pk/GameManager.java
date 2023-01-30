@@ -5,6 +5,13 @@ import pk.dice.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The <code>GameManager</code> class for the Piraten Kapern game manages all
+ * the games that are to be played, handing the {@link Dice}, {@link DiceFaces},
+ * and {@link FortuneCard} to the correct {@link Player}, and then calculating
+ * the scores using the {@link ScoreCalculator} before assigning to the
+ * respective <code>Player</code>s.
+ */
 public class GameManager {
 
     private Dice dice;
@@ -25,16 +32,30 @@ public class GameManager {
     public static final int DISQUALIFIED_SKULL_COUNT = 3;
     public static final int ENDING_SCORE = 6000;
 
-    /*
-     * public GameManager() throws IllegalArgumentException, NullPointerException {
-     * this(new String[]{"RANDOM", "RANDOM"}, DEFAULT_NUM_GAMES);
-     * }
+    /**
+     * Constructor that creates a <code>GameManager</code> to manage the default
+     * number of games using players with the indicated strategies.
+     *
+     * @param playerStrategies the strategies to assign to each <code>Player</code>
+     *                         in the game.
+     * @throws IllegalArgumentException if an invalid strategy or array length is
+     *                                  present in <code>playerStrategies</code>
      */
-
     public GameManager(String[] playerStrategies) throws IllegalArgumentException {
         this(playerStrategies, DEFAULT_NUM_GAMES);
     }
 
+    /**
+     * Constructor that creates a <code>GameManager</code> to manage the given
+     * custom number of games.
+     *
+     * @param playerStrategies the strategies to assign to each <code>Player</code>
+     *                         in the game.
+     * @param numGames         the number of games to play
+     * @throws IllegalArgumentException if an invalid strategy or array length is
+     *                                  present in <code>playerStrategies</code>, or
+     *                                  the number of games is less than 1.
+     */
     public GameManager(String[] playerStrategies, int numGames) throws IllegalArgumentException {
         if (playerStrategies.length < MIN_PLAYERS || playerStrategies.length > MAX_PLAYERS) {
             throw new IllegalArgumentException(
@@ -57,18 +78,18 @@ public class GameManager {
         }
     }
 
-    public void resetGame() {
+    protected void resetGame() {
         logger.debug("Resetting all players for new game.");
         for (Player player : players) {
             player.resetPlayer();
         }
     }
 
-    public void assignScore(int playerID, FortuneCard card) {
+    protected void assignScore(int playerID, FortuneCard card) {
         players[playerID].updateScore(scoreCalculator.calculateScore(card, diceFaces));
     }
 
-    public boolean playTurns(boolean finalTurn) {
+    protected boolean playTurns(boolean finalTurn) {
         for (Player player : players) {
             if (!player.isDone()) {
                 FortuneCard card = deck.getNextCard();
@@ -83,7 +104,7 @@ public class GameManager {
         return false;
     }
 
-    public boolean checkFinalTurn() {
+    protected boolean checkFinalTurn() {
         logger.debug("Checking for true final turn.");
         for (Player player : players) {
             if (player.getScore() >= ENDING_SCORE) {
@@ -97,7 +118,7 @@ public class GameManager {
         return false;
     }
 
-    public void updateWinner() {
+    protected void updateWinner() {
         logger.debug("Updating the winner of this game.");
         int highScore = -1;
         for (Player player : players) {
@@ -110,7 +131,7 @@ public class GameManager {
         }
     }
 
-    public void playGame() {
+    protected void playGame() {
         boolean finalTurn = false;
         deck.resetTopIndex();
         deck.shuffleDeck();
@@ -124,7 +145,7 @@ public class GameManager {
         updateWinner();
     }
 
-    public void playAllGames() {
+    protected void playAllGames() {
         for (int i = 0; i < NUM_GAMES; i++) {
             logger.debug("############# Start game %d #############", i + 1);
             playGame();
